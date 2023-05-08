@@ -1,9 +1,7 @@
-<div class="dark:bg-gray-900 bg-gray-100 w-full h-full">
+<script>
+import '../App.scss'
+</script>
+
+<div class="dark:bg-stone-950 bg-white full-viewport dark:text-white text-black">
   <slot />
 </div>
-
-<style lang="postcss">
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-</style>

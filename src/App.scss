@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.full-viewport {
+  height: 100vw;
+  width: 100vw;
+}
+
+.g-prose {
+  @apply prose lg:prose-lg dark:prose-invert prose-stone;
+}
+
+.g-prose hr {
+  @apply my-12 h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50 w-full mx-16;
+}
