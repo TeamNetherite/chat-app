@@ -1,12 +1,3 @@
-<script>
-    let counter = 0;
-</script>
-<style>
-    button {
-        background: green;
-        color:#FFF;
-    }
-</style>
-
-I'm counting ... {counter}
-<button on:click={() => {counter++}}>Count up</button>
+<div class="prose lg:prose-lg dark:text-white text-black">
+  <h1>Hey! Netherite guy here.</h1>
+</div>
