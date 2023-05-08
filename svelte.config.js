@@ -9,10 +9,7 @@ const config = {
   // for more information about preprocessors
   preprocess: preprocess({
     postcss: {
-      plugins: [
-        tailwind,
-        aupref
-      ],
+      plugins: [tailwind, aupref],
     },
   }),
 
