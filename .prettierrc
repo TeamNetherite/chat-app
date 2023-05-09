@@ -1,0 +1,9 @@
+# vim:ft=yaml
+trailingComma: es5
+tabWidth: 2
+semi: false
+singleQuote: true
+plugins:
+  - prettier-plugin-svelte
+  - prettier-plugin-tailwindcss
+pluginSearchDirs: false

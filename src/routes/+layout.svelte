@@ -1,7 +1,7 @@
 <script>
-import '../App.scss'
+  import '../App.scss'
 </script>
 
-<div class="dark:bg-stone-950 bg-white full-viewport dark:text-white text-black">
+<div class="bg-white full-viewport text-black dark:bg-background dark:text-white">
   <slot />
 </div>
