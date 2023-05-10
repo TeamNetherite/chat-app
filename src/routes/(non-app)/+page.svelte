@@ -1,5 +1,3 @@
-<script>
-</script>
 <div class="g-prose p-8" id="main-page">
   <main class="flex flex-col justify-center text-center">
     <h1 class="font-heading" style="text-transform: uppercase;">Imagine a place...</h1>
