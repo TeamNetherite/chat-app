@@ -20,6 +20,9 @@ const config = {
       dynamic_origin: true,
       out: 'build-web',
     }),
+    env: {
+      publicPrefix: 'NETHERITE_'
+    }
   },
 }
 

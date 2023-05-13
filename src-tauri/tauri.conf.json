@@ -3,8 +3,7 @@
     "beforeBuildCommand": "NETHERITE_TAURI=1 bun run build",
     "beforeDevCommand": "NETHERITE_TAURI=1 bun run dev",
     "devPath": "http://localhost:5173",
-    "distDir": "/mnt/k/netherite/netherite-chat/app/build-tauri",
-    "withGlobalTauri": true
+    "distDir": "/mnt/k/netherite/netherite-chat/app/build-tauri"
   },
   "package": {
     "productName": "app",
