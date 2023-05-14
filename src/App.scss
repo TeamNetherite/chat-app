@@ -19,3 +19,12 @@
 .g-prose hr {
   @apply mx-16 my-12 h-0.5 w-full border-t-0 bg-neutral-100 opacity-100 dark:opacity-50;
 }
+
+a {
+  text-decoration: none;
+  text-decoration-line: none;
+}
+
+body {
+  @apply bg-white text-black dark:bg-background dark:text-white;
+}

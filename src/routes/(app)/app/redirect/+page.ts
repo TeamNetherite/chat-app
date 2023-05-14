@@ -31,15 +31,19 @@ export const load = (async ({ url, fetch }) => {
     refresh: null as string | null,
   };
   if (isTauri) {
+    console.log("tauri");
   } else {
     const cookies = getCookies();
-    const tokensCurrent = COOKIE_SCHEMA.parse(cookies);
+    const tokensCurrent = COOKIE_SCHEMA.safeParse(cookies)
+      ? COOKIE_SCHEMA.parse(cookies)
+      : undefined;
+    const hasTokens = tokensCurrent &&
+      !!tokensCurrent.NetheriteChatRefreshToken;
 
-    tokens.access = tokensCurrent.NetheriteChatAccessToken ?? null;
-    tokens.refresh = tokensCurrent.NetheriteChatRefreshToken ?? null;
-
-    const hasTokens = !!tokensCurrent.NetheriteChatRefreshToken;
     if (hasTokens) {
+      tokens.access = tokensCurrent.NetheriteChatAccessToken ?? null;
+      tokens.refresh = tokensCurrent.NetheriteChatRefreshToken!;
+
       if (!tokens.access) {
         const nextTokens = (await fetch(`${SERVER_URL}/auth/refresh`, {
           body: JSON.stringify(tokensCurrent.NetheriteChatRefreshToken!),
@@ -47,6 +51,7 @@ export const load = (async ({ url, fetch }) => {
         tokens.access = nextTokens.access;
         tokens.refresh = nextTokens.refresh;
       }
+
       tokenStore.set({
         access: tokens.access!,
         refresh: tokens.refresh!,
