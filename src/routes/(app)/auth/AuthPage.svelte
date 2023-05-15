@@ -1,25 +1,31 @@
 <script lang="ts">
-  import { fade, fly } from 'svelte/transition'
+  import { fly } from 'svelte/transition'
   import Eye from '~icons/mdi/eye'
   import EyeOff from '~icons/mdi/eye-off'
-  import { type z, camelToTitle } from '$lib/zod'
+  import {
+    type z,
+    type MaybeWrappedObject,
+    camelToTitle,
+    shape as shapeOf,
+  } from '$lib/zod'
 
   type T = $$Generic<{}>
-  type Sh = $$Generic<z.ZodRawShape>
+  type TShape = $$Generic<z.ZodRawShape>
 
-  export let schema: z.ZodObject<Sh> & z.Schema<T>
-  export let schemaRefine: z.Schema<T> = schema
+  export let schema: MaybeWrappedObject<TShape>
 
-  let keys = schema.keyof()
+  let shape = shapeOf(schema)
+
+  let keys = Object.keys(shape)
 
   export let data: Partial<T> = {}
 
-  export let act: (data: z.infer<typeof schemaRefine>) => void
+  export let act: (data: z.infer<typeof schema> & any) => void
   export let title: string
-  export let buttonName: string
+  export let buttonName: string = 'Submit'
 
   let showPwd: Partial<Record<string, boolean>> = Object.fromEntries(
-    (keys.options as string[]).map((val) => [
+    keys.map((val) => [
       val,
       val.includes('password') || val.includes('Password') ? false : undefined,
     ])
@@ -27,22 +33,26 @@
 
   let pass = false
 
-  $: pass = schemaRefine.safeParse(data).success
+  $: pass = schema.safeParse(data).success
 
   let err: Partial<Record<string, string | null>> = Object.fromEntries(
-    (keys.options as string[]).map((val) => [val, null])
+    keys.map((val) => [val, null])
   )
 
   function chan(val: string, name: string, ty: z.Schema) {
     err[name] = undefined
     const parsed = ty.safeParse(val)
-    parsed.success ? (data[name as keyof T] = parsed.data) : (err[name] = null)
+    if (parsed.success) {
+      data[name as keyof T] = parsed.data
+      data = data
+    } else err[name] = null
   }
   let isErrored = false
 
-  function doAct() {
-    const parsed = schemaRefine.safeParse(data)
-    if (parsed.success) act(schemaRefine.parse(data))
+  const doAct = () => {
+    isErrored = false
+    const parsed = schema.safeParse(data)
+    if (parsed.success) act(schema.parse(data! as T))
     else {
       isErrored = true
       parsed.error.issues
@@ -60,23 +70,20 @@
     <h1 class="text-center">NETHERITE.CHAT - {title}</h1>
     {#if isErrored}
       <h3
-        in:fade={{ duration: 12000 }}
+        in:fly={{ x: 100, duration: 2000 }}
         out:fly={{ x: 100 }}
         class="text-center text-red-950"
       >
         One of the fields is either empty or invalid.
       </h3>
     {/if}
-    <form
-      on:submit|preventDefault={doAct}
-      class="flex w-max flex-col justify-center gap-8 self-center p-8"
-    >
-      {#each Object.entries(schema.shape) as [name, ty] (name)}
-        <label>
+    <div class="flex w-max flex-col justify-center gap-8 self-center p-8">
+      {#each Object.entries(shape) as [name, ty] (name)}
+        <label class="mr-3 flex w-min flex-col items-start justify-between text-2xl">
           <div class="flex flex-auto flex-col">
             {camelToTitle(name)}
             {#if ty.description}
-              <div class="text-sm mb-1">{@html ty.description}</div>
+              <div class="mb-1 text-sm">{@html ty.description}</div>
             {/if}
           </div>
           <!-- @ts-ignore -->
@@ -87,16 +94,18 @@
                 ? 'password'
                 : 'text'}
               class:login-err={err[name] !== undefined}
+              class="text-black flex rounded-sm p-2 px-3"
+              aria-invalid={err[name] !== undefined}
             />
             {#if name.includes('password') || name.includes('Password')}
               <button
                 on:click={() => (showPwd[name] = !showPwd[name])}
-                class="h-min w-min justify-end"
+                class="eye"
               >
                 {#if showPwd[name] === true}
-                  <EyeOff class="block h-max w-max text-blue-celestial" />
+                  <EyeOff />
                 {:else}
-                  <Eye class="block h-max w-max text-blue-celestial" />
+                  <Eye />
                 {/if}
               </button>
             {/if}
@@ -108,28 +117,28 @@
           {/if}
         </label>
       {/each}
-      <button
-        disabled={!pass}
-        class="w-max cursor-pointer self-center rounded-md bg-blue-celestial p-2 px-8 text-black disabled:cursor-not-allowed disabled:bg-neutral-800 dark:text-white"
-        >{buttonName}</button
-      >
-    </form>
+      <slot {doAct}>
+        <button
+          class="w-max cursor-pointer self-center rounded-md bg-green-800 p-2 px-8 text-black dark:text-white"
+          on:click={doAct}
+        >
+          {buttonName}
+        </button>
+      </slot>
+    </div>
   </div>
 </div>
 
-<style lang="scss">
-  #login-root #login-wrapper {
-    form {
-      label {
-        @apply mr-3 flex w-min flex-col items-start justify-between text-2xl;
-        input {
-          @apply flex rounded-sm p-2 px-3 text-black;
-        }
-      }
-    }
-  }
-
+<style>
   .login-err {
     border: 3px solid theme('colors.red.bittersweet');
+  }
+
+  .eye {
+    width: 64px;
+    height: 64px;
+    position: relative;
+    right: 15%;
+    color: theme('colors.indigo.500');
   }
 </style>

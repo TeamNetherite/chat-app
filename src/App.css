@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400&display=swap');
 @import url('https://mshaugh.github.io/nerdfont-webfonts/build/nerdfont-webfonts.css');
-@import './fonts.scss';
+@import './fonts.css';
 
 @tailwind base;
 @tailwind components;

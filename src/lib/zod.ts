@@ -1,5 +1,5 @@
-import z from 'zod'
-export * from 'zod'
+import z from "zod";
+export * from "zod";
 
 const notAllowedPasswords = [
   "12345abc",
@@ -18,11 +18,26 @@ export function camelToTitle(text: string): string {
   return finalResult;
 }
 
-export const zz = {
-  email() {
-    return emailSchema
-  },
-  password() {
-    return passwordSchema
+export type MaybeWrappedObject<TShape extends z.ZodRawShape> =
+  | z.ZodObject<TShape>
+  | z.ZodEffects<z.ZodObject<TShape>>;
+
+export function shape<TShape extends z.ZodRawShape, TSchema extends MaybeWrappedObject<TShape>>(
+  o: TSchema,
+): TShape {
+  if (o instanceof z.ZodEffects) {
+    return shape(o.innerType());
+  } else {
+    return o.shape;
   }
 }
+
+export const zz = {
+  email() {
+    return emailSchema;
+  },
+  password() {
+    return passwordSchema;
+  },
+  shape,
+};
