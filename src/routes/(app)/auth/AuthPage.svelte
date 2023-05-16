@@ -1,7 +1,11 @@
+<!-- @hmr:keep-all -->
 <script lang="ts">
+  '@hmr:keep-all'
+
   import { fly } from 'svelte/transition'
-  import Eye from '~icons/mdi/eye'
-  import EyeOff from '~icons/mdi/eye-off'
+  import eye from '@iconify/icons-mdi/eye'
+  import eyeOff from '@iconify/icons-mdi/eye-off'
+  import Icon from '@iconify/svelte'
   import {
     type z,
     type MaybeWrappedObject,
@@ -102,11 +106,7 @@
                 on:click={() => (showPwd[name] = !showPwd[name])}
                 class="eye"
               >
-                {#if showPwd[name] === true}
-                  <EyeOff />
-                {:else}
-                  <Eye />
-                {/if}
+                <Icon icon={showPwd[name] === true ? eyeOff : eye} />
               </button>
             {/if}
           </div>
@@ -131,7 +131,8 @@
 
 <style>
   .login-err {
-    border: 3px solid theme('colors.red.bittersweet');
+    @apply pb-2;
+    border-bottom: 3px solid theme('colors.red.bittersweet');
   }
 
   .eye {

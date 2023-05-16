@@ -50,6 +50,11 @@ export const load = (async ({ url, fetch }) => {
         }).then((val) => val.json())) as Tokens; // invalidates refresh tokens, so we need to store the new one
         tokens.access = nextTokens.access;
         tokens.refresh = nextTokens.refresh;
+        setCookies({
+          ...cookies,
+          NetheriteChatAccessToken: nextTokens.access,
+          NetheriteChatRefreshToken: nextTokens.refresh,
+        });
       }
 
       tokenStore.set({

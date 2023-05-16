@@ -1,8 +1,11 @@
 <script lang="ts">
+  '@hmr:keep-all'
+
   import { z, zz } from '$lib/zod'
-  import ChevronRight from '~icons/mdi/chevron-right'
-  import ChevronLeft from '~icons/mdi/chevron-left'
+  import chevronRight from '@iconify/icons-mdi/chevron-right'
+  import chevronLeft from '@iconify/icons-mdi/chevron-left'
   import AuthPage from '../AuthPage.svelte'
+  import Icon from '@iconify/svelte'
 
   const schemaAuth = z
     .object({
@@ -20,7 +23,7 @@
         .password()
         .describe('Type the password again so you are sure you remember it.'),
     })
-    .refine(({ password, confirmPassword }) => password !== confirmPassword, {
+    .refine(({ password, confirmPassword }) => password === confirmPassword, {
       message: "Passwords don't match.",
       path: ['confirmPassword'],
     })
@@ -46,10 +49,17 @@
     au = false
   }
 
-  function actB(data: z.infer<typeof schemaDetails>) {}
+  function actB(data: z.infer<typeof schemaDetails>) {
+    console.log('register', data)
+    console.log('auth', auth)
+  }
 
   let au = true
 </script>
+
+<svelte:head>
+  <title>netherite.chat - Register</title>
+</svelte:head>
 
 {#if au}
   <AuthPage
@@ -57,13 +67,13 @@
     buttonName="Register"
     title="Register"
     act={actA}
+    let:doAct
   >
     <button
-      let:doAct
       class="mt-3 w-min justify-center self-end rounded-3xl border border-zinc-600 bg-green-800"
       on:click={() => doAct()}
     >
-      <ChevronRight class="w-10 h-10" />
+      <Icon icon={chevronRight} class="h-10 w-10" />
     </button>
   </AuthPage>
 {:else}
@@ -72,23 +82,21 @@
     schema={schemaDetails}
     buttonName="Register"
     title="Register"
+    let:doAct
   >
-    <div
-      let:doAct
-      class="flex flex-auto flex-row"
-    >
+    <div class="flex flex-row justify-between">
       <button
         on:click={() => (au = true)}
-        class="mt-3 w-min justify-end rounded-3xl border border-zinc-600 bg-gray-800"
+        class="mt-3 w-min rounded-3xl border border-zinc-600 bg-gray-800"
       >
-        <ChevronLeft class="w-10 h-10" />
+        <Icon icon={chevronLeft} class="h-10 w-10" />
       </button>
       <button
-        class="mt-3 w-min justify-end rounded-3xl border border-zinc-600 bg-gray-800"
+        class="mt-3 w-min rounded-3xl border border-zinc-600 bg-gray-800"
         on:click={() => doAct()}
       >
-        <ChevronRight class="w-10 h-10" />
+        <Icon icon={chevronRight} class="h-10 w-10" />
       </button>
-    </div></AuthPage
-  >
+    </div>
+  </AuthPage>
 {/if}
