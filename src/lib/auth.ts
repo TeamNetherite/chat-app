@@ -1,6 +1,5 @@
 import { NETHERITE_CHAT_SERVER_URL as SERVER_URL } from "$env/static/public";
 import { writable } from "svelte/store";
-import { z } from "zod";
 
 export interface Tokens {
   access: string;
@@ -15,9 +14,12 @@ export async function login(
     body: JSON.stringify(props),
   });
 
-  return (await response.json()) as Tokens | null;
+  const tokens = (await response.json()) as Tokens | null;
+
+  if (tokens)
+    currentTokens.set(tokens)
+
+  return tokens
 }
 
-export const tokens = writable<Tokens>(undefined);
-
-
+export const currentTokens = writable<Tokens>(undefined);

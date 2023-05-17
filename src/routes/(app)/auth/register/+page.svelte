@@ -17,7 +17,7 @@
       password: zz
         .password()
         .describe(
-          'The password that you want to log in with. Be sure to remember it because recovering your account not knowing a password is <strong>tedious</strong>!'
+          'The password that you want to log in with. Be sure to remember it because recovering your account without a password is <strong>tedious</strong>!'
         ),
       confirmPassword: zz
         .password()
@@ -51,7 +51,6 @@
 
   function actB(data: z.infer<typeof schemaDetails>) {
     console.log('register', data)
-    console.log('auth', auth)
   }
 
   let au = true

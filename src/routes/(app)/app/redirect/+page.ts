@@ -2,7 +2,7 @@ import { isTauri } from "$lib/tauri";
 import { z } from "zod";
 import type { PageLoad } from "./$types";
 import { NETHERITE_CHAT_SERVER_URL as SERVER_URL } from "$env/static/public";
-import { type Tokens, tokens as tokenStore } from "$lib/auth";
+import { type Tokens, currentTokens as tokenStore } from "$lib/auth";
 import { redirect } from "@sveltejs/kit";
 
 function getCookies(): Record<string, string> {
