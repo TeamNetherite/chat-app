@@ -1,25 +1,23 @@
 <script lang="ts">
-  import Spinner from '$lib/Spinner.svelte'
-import { login, type Tokens } from '$lib/auth'
+  import Circle2 from 'svelte-loading-spinners/Circle2.svelte'
+  import { login, type Tokens } from '$lib/auth'
   import { z, zz } from '$lib/zod'
   import AuthPage from '../AuthPage.svelte'
+  import { goto } from '$app/navigation'
 
   const schema = z.object({ email: zz.email(), password: zz.password() })
 
   let promise: Promise<Tokens | null> | undefined
 
   function act(data: z.infer<typeof schema>) {
-    promise = login(data)
+    promise = login(data).then(async (tokens) => { await goto('/app'); return tokens; })
   }
 </script>
 
 {#if promise === undefined}
-  <Spinner />
   <AuthPage {schema} title="Login" buttonName="Log in" {act} />
 {:else}
   {#await promise}
-    <Spinner />
-  {:then tokens}
-    {tokens}
+    <Circle2 />
   {/await}
 {/if}

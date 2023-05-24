@@ -14,12 +14,16 @@ export async function login(
     body: JSON.stringify(props),
   });
 
-  const tokens = (await response.json()) as Tokens | null;
+  const tokens = await response.json().then((val) => val as (Tokens | null));
 
-  if (tokens)
-    currentTokens.set(tokens)
+  localStorage.setItem("netheritechataccesstoken", tokens?.access ?? "");
+  localStorage.setItem("netheritechatrefreshtoken", tokens?.refresh ?? "");
 
-  return tokens
+  if (tokens) {
+    currentTokens.set(tokens);
+  }
+
+  return tokens;
 }
 
 export const currentTokens = writable<Tokens>(undefined);

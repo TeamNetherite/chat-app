@@ -1,6 +1,6 @@
-import abun from '@bun-community/sveltekit-adapter-bun'
-import astatic from '@sveltejs/adapter-static'
-import { vitePreprocess } from '@sveltejs/kit/vite'
+import abun from "@bun-community/sveltekit-adapter-bun";
+import astatic from "@sveltejs/adapter-static";
+import { vitePreprocess } from "@sveltejs/kit/vite";
 
 const isTauri = !!process.env.NETHERITE_TAURI;
 
@@ -9,19 +9,21 @@ const config = {
   preprocess: vitePreprocess(),
 
   kit: {
-    adapter: isTauri ? astatic({
-      pages: 'build-tauri',
-      assets: 'build-tauri',
-      //strict: false,
-      fallback: 'index.html',
-    }) : abun({
-      dynamic_origin: true,
-      out: 'build-web',
-    }),
+    adapter: isTauri
+      ? astatic({
+        pages: "build-tauri",
+        assets: "build-tauri",
+        //strict: false,
+        fallback: "index.html",
+      })
+      : abun({
+        dynamic_origin: true,
+        out: "build-web",
+      }),
     env: {
-      publicPrefix: 'NETHERITE_'
-    }
+      publicPrefix: "NETHERITE_",
+    },
   },
-}
+};
 
-export default config
+export default config;

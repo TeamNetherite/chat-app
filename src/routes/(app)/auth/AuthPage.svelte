@@ -1,5 +1,7 @@
 <!-- @hmr:keep-all -->
 <script lang="ts">
+  import type { Snapshot } from '@sveltejs/kit'
+
   '@hmr:keep-all'
 
   import { fly } from 'svelte/transition'
@@ -23,6 +25,11 @@
   let keys = Object.keys(shape)
 
   export let data: Partial<T> = {}
+
+  export const snapshot: Snapshot<typeof data> = {
+    capture: () => data,
+    restore: (newData) => data = newData
+  }
 
   export let act: (data: z.infer<typeof schema> & any) => void
   export let title: string
