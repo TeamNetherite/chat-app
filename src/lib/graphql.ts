@@ -1,28 +1,5 @@
-import { gql } from "@apollo/client/core";
+import { gql } from "../__generated__/gql";
 
-export const GET_USER = gql`
-query GetUser($id:ID) {
-  getUser($id) {
-    id
-    tagName
-    tagDiscriminator
-    displayName
-    fmtTag
-  }
-}
+export const ME = gql`
+query Me {}
 `;
-
-export const GET_USER_FRIENDS = gql`
-query GetUserFriends($id:ID) {
-  getUser($id) {
-    id
-    friends {
-      id
-      tagName
-      tagDiscriminator
-      displayName
-      fmtTag
-    }
-  }
-}
-`
