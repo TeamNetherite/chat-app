@@ -21,6 +21,6 @@
       </div>
     {/each}
   </div>
-  <h1 class="text-xl">{profile.displayName}</h1>
-  <h3 class="text-md">{profile.tag}</h3>
+  <h1 class="text-3xl">{profile.displayName}</h1>
+  <h3 class="text-lg">{profile.tag}</h3>
 </div>

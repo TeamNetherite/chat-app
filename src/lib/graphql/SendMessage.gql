@@ -1,0 +1,16 @@
+mutation SendMessage($init:MessageInit!) {
+  sendMessage(message: $init) {
+    id
+    author {
+      id
+      displayName
+    }
+    content
+    recipient {
+      asUser {
+        id
+        displayName
+      }
+    }
+  }
+}
