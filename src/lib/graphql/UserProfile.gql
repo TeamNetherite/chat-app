@@ -1,0 +1,6 @@
+fragment UserProfile on User {
+  id
+  displayName
+  tag
+  badges
+}

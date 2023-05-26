@@ -1,6 +1,7 @@
 import abun from "@bun-community/sveltekit-adapter-bun";
 import astatic from "@sveltejs/adapter-static";
 import { vitePreprocess } from "@sveltejs/kit/vite";
+import path from 'node:path'
 
 const isTauri = !!process.env.NETHERITE_TAURI;
 
@@ -20,6 +21,9 @@ const config = {
         dynamic_origin: true,
         out: "build-web",
       }),
+    alias: {
+      $houdini: path.resolve(".", "$houdini"),
+    },
     env: {
       publicPrefix: "NETHERITE_",
     },

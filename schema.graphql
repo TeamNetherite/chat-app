@@ -1,0 +1,44 @@
+schema {
+  query: QueryRoot
+  mutation: MutationRoot
+}
+
+enum Badge {
+  ADMIN
+  MODERATOR
+}
+
+type Message {
+  author: User!
+  content: String!
+  id: ID!
+  recipient: MessageRecipient!
+}
+
+input MessageInit {
+  content: String!
+  recipient: ID!
+}
+
+type MessageRecipient {
+  asUser: User
+}
+
+type MutationRoot {
+  addFriend(other: String!): User
+  sendMessage(message: MessageInit!): Message!
+}
+
+type QueryRoot {
+  me: User!
+}
+
+type User {
+  badges: [Badge!]!
+  displayName: String!
+  friends: [User!]!
+  id: ID!
+  tag: String!
+  tagDiscriminator: [Int!]!
+  tagName: String!
+}

@@ -1,0 +1,10 @@
+query Me {
+  me {
+    tagName
+    tagDiscriminator
+    id
+    displayName
+    tag
+    badges
+  }
+}

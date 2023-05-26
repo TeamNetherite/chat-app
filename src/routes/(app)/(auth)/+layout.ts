@@ -1,7 +1,7 @@
 import { isTauri } from "$lib/tauri";
 import type { LayoutLoad } from "./$types";
 import { NETHERITE_CHAT_SERVER_URL as SERVER_URL } from "$env/static/public";
-import { currentTokens as tokenStore, type Tokens } from "$lib/auth";
+import { currentTokens as tokenStore, refresh } from "$lib/auth";
 import { redirect } from "@sveltejs/kit";
 
 export const load = (async ({ fetch }) => {
@@ -23,12 +23,15 @@ export const load = (async ({ fetch }) => {
       tokens.access = tokensCurrent.access ?? null;
       tokens.refresh = tokensCurrent.refresh!;
 
-      if (!tokens.access) {
-        const nextTokens = (await fetch(`${SERVER_URL}/auth/refresh`, {
-          body: JSON.stringify(tokensCurrent.refresh!),
-        }).then((val) => val.json())) as Tokens; // invalidates refresh tokens, so we need to store the new one
-        tokens.access = nextTokens.access;
-        tokens.refresh = nextTokens.refresh;
+      const isActive = {
+        access: tokens.access ? (await (await fetch(`${SERVER_URL}/auth/isactive?token=${tokens.access}`, { method: "GET" })).json()) as boolean : false,
+        refresh: (await (await fetch(`${SERVER_URL}/auth/isactive?token=${tokens.refresh}`, { method: "GET" })).json()) as boolean,
+      }
+
+      if (!isActive.access) {
+        const nextTokens = await refresh(true, fetch, isActive.refresh ? tokens.refresh : null);
+
+        tokens = nextTokens!;
       }
 
       tokenStore.set({

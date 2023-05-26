@@ -1,0 +1,12 @@
+query Friends {
+  me {
+    friends {
+      tagDiscriminator
+      tagName
+      badges
+      id
+      displayName
+      tag
+    }
+  }
+}
