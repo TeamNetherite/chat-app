@@ -23,27 +23,28 @@
 
   let messages: Array<Message> = []
 
-  $: messages = $getConvo.data?.conversationDirect?.messages?.edges?.map(
-    (edge) => edge.node.message
-  ) ?? messages
+  $: messages =
+    $getConvo.data?.conversationDirect?.messages?.edges?.map(
+      (edge) => edge.node.message
+    ) ?? messages
 
   let messageContent = ''
 
   const sendMessage = new SendMessageStore()
 
   function send() {
-    sendMessage.mutate({
-      init: {
-        content: messageContent,
-        recipient: "user:" + currentConvo.id,
-      },
-    })
+    ;(async () => {
+      await sendMessage.mutate({
+        init: {
+          content: messageContent,
+          recipient: 'user:' + currentConvo.id,
+        },
+      })
 
-    messageContent = ''
+      messageContent = ''
 
-    getConvo.fetch({
-      variables: { userId: currentConvo.id },
-    })
+      await getConvo.loadNextPage()
+    })()
   }
 </script>
 
