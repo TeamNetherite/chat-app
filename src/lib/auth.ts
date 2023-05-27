@@ -46,6 +46,9 @@ export async function refresh(
     method: "POST",
   }).then((val) => val.json())) as Tokens; // invalidates refresh token, so we need to store the new one
   
+  localStorage.setItem("netheritechataccesstoken", nextTokens?.access ?? "");
+  localStorage.setItem("netheritechatrefreshtoken", nextTokens?.refresh ?? "");
+  
   currentTokens.set(nextTokens);
 
   return nextTokens;

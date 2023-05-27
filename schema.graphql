@@ -8,11 +8,35 @@ enum Badge {
   MODERATOR
 }
 
+type Conversation {
+  author: User!
+  getAllMessages: [Message!]!
+  messages(after: Int, before: Int, first: Int, last: Int, limit: Int): MessageConnection!
+  recipient: MessageRecipient!
+}
+
 type Message {
   author: User!
   content: String!
+  createdAt: String!
   id: ID!
   recipient: MessageRecipient!
+}
+
+type MessageConnection {
+  edges: [MessageEdge!]!
+  nodes: [MessageCursor!]!
+  pageInfo: PageInfo!
+}
+
+type MessageCursor {
+  cursor: Int!
+  message: Message!
+}
+
+type MessageEdge {
+  cursor: String!
+  node: MessageCursor!
 }
 
 input MessageInit {
@@ -29,7 +53,16 @@ type MutationRoot {
   sendMessage(message: MessageInit!): Message!
 }
 
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
 type QueryRoot {
+  conversationDirect(recipient: ID!): Conversation!
+  conversations: [Conversation!]!
   me: User!
 }
 

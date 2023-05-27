@@ -1,0 +1,30 @@
+query GetDM($userId: ID!) {
+  conversationDirect(recipient: $userId) {
+    messages(last: 10) @paginate(mode: Infinite) {
+      edges {
+        node {
+          message {
+            id
+            content
+            createdAt
+            author {
+              id
+              tag
+              displayName
+            }
+            recipient {
+              asUser {
+                id
+                tag
+                displayName
+              }
+            }
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+      }
+    }
+  }
+}

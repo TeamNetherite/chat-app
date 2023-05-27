@@ -1,0 +1,11 @@
+query Conversations {
+  conversations {
+    recipient {
+      asUser {
+        id
+        tag
+        displayName
+      }
+    }
+  }
+}

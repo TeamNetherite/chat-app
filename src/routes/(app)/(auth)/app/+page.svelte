@@ -1,29 +1,13 @@
 <script lang="ts">
-  import { MeStore, SendMessageStore } from '$houdini'
-  import Profile from '$lib/Profile.svelte'
+  import { ConversationsStore } from '$houdini'
   import yay from '$lib/yayql'
-  import Circle2 from 'svelte-loading-spinners/Circle2.svelte'
+  import App from './App.svelte'
 
-  const me_ = yay(new MeStore()).then(me => me.me)
-  const sendMessage = new SendMessageStore()
-
-  let message = ''
-  let recipient = ''
+  const conversations = yay(new ConversationsStore()).then((convos) =>
+    convos.conversations.map((convo) => convo.recipient.asUser!)
+  )
 </script>
 
-{#await me_}
-  <Circle2 />
-{:then me}
-  <Profile profile={me} />
+{#await conversations then convos}
+  <App {convos} />
 {/await}
-
-<input bind:value={message} class="dark:text-black" />
-<input bind:value={recipient} class="dark:text-black" />
-<button on:click={() => {
-  sendMessage.mutate({
-    init: {
-      recipient,
-      content: message
-    }
-  })
-}}>send message</button>
