@@ -28,3 +28,20 @@ a {
 body {
   @apply bg-white text-black dark:bg-background dark:text-white;
 }
+
+.scrollbar-rmrf::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-rmrf {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+$statuses: ("online": theme('colors.green.500'), "idle": theme('colors.yellow.500'), "dnd": theme('colors.red.500'), "offline": theme('colors.gray.500'));
+
+@each $status, $color in $statuses {
+  .status-#{$status} {
+    background-color: $color;
+  }
+}

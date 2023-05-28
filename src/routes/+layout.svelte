@@ -1,4 +1,4 @@
 <script>
-  import '../App.css';
+  import '../App.scss';
 </script>
 <div><slot /></div>

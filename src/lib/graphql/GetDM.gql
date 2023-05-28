@@ -1,6 +1,6 @@
 query GetDM($userId: ID!) {
   conversationDirect(recipient: $userId) {
-    messages(last: 10) @paginate(mode: Infinite) {
+    messages(last: 25) @paginate(mode: Infinite) {
       edges {
         node {
           message {

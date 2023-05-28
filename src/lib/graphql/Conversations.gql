@@ -5,6 +5,7 @@ query Conversations {
         id
         tag
         displayName
+        status
       }
     }
   }

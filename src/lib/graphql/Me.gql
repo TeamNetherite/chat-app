@@ -6,5 +6,12 @@ query Me {
     displayName
     tag
     badges
+    status
+    friends {
+      id
+      tag
+      displayName
+      status
+    }
   }
 }

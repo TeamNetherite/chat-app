@@ -1,0 +1,8 @@
+mutation SetStatus($status: Status!) {
+  setStatus(status: $status) {
+    id
+    status
+    displayName
+    tag
+  }
+}

@@ -78,6 +78,9 @@ export default {
           netherite: '#4D4143',
           'netherite-outline': '#3E3232'
         },
+        base1984: {
+          muted: 'hsl(214 8.1% 61.2% / 1)'
+        }
       },
     },
   },

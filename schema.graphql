@@ -1,6 +1,7 @@
 schema {
   query: QueryRoot
   mutation: MutationRoot
+  subscription: SubscriptionRoot
 }
 
 enum Badge {
@@ -51,6 +52,7 @@ type MessageRecipient {
 type MutationRoot {
   addFriend(other: String!): User
   sendMessage(message: MessageInit!): Message!
+  setStatus(status: Status!): User!
 }
 
 type PageInfo {
@@ -66,11 +68,23 @@ type QueryRoot {
   me: User!
 }
 
+enum Status {
+  DO_NOT_DISTURB
+  IDLE
+  OFFLINE
+  ONLINE
+}
+
+type SubscriptionRoot {
+  messages: Message!
+}
+
 type User {
   badges: [Badge!]!
   displayName: String!
   friends: [User!]!
   id: ID!
+  status: Status!
   tag: String!
   tagDiscriminator: [Int!]!
   tagName: String!

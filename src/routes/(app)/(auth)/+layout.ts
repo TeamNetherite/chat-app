@@ -1,4 +1,3 @@
-import { isTauri } from "$lib/tauri";
 import type { LayoutLoad } from "./$types";
 import { NETHERITE_CHAT_SERVER_URL as SERVER_URL } from "$env/static/public";
 import { currentTokens as tokenStore, refresh } from "$lib/auth";

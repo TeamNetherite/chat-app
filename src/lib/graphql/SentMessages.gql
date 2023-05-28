@@ -1,0 +1,19 @@
+subscription SentMessages {
+  messages {
+    id
+    author {
+      id
+      tag
+      displayName
+    }
+    content
+    createdAt
+    recipient {
+      asUser {
+        id
+        tag
+        displayName
+      }
+    }
+  }
+}
