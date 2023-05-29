@@ -6,6 +6,11 @@ const config = {
   plugins: {
     "houdini-svelte": {},
   },
+  types: {
+    MessageConnection: {
+      keys: ['id']
+    }
+  }
 };
 
 export default config;

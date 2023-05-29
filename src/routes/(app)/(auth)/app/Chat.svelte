@@ -5,14 +5,15 @@
     type GetDM$result,
     SendMessageStore,
     SentMessagesStore,
+    MeStore,
   } from '$houdini'
   import MdiSend from '~icons/mdi/send'
   import { type ArrayOf, groupBy } from '$lib/typemagic'
   import Status from '$lib/Status.svelte'
 
-  type Message = ArrayOf<
+  type Message = Omit<ArrayOf<
     GetDM$result['conversationDirect']['messages']['edges']
-  >['node']['message']
+  >, "node">
 
   export let currentConvo: NonNullable<
     ArrayOf<Conversations$result['conversations']>['recipient']['asUser']
@@ -20,13 +21,13 @@
 
   const getConvo = new GetDMStore()
 
-  $: getConvo.fetch({ variables: { userId: currentConvo.id } })
+  $: getConvo.fetch({ variables: { userId: currentConvo.id } }).then(console.log)
 
   let messages: Array<Message> = []
 
   $: messages =
     $getConvo.data?.conversationDirect?.messages?.edges?.map(
-      (edge) => edge.node.message
+      (edge) => edge as Message
     ) ?? messages
 
   let messageContent = ''
@@ -35,16 +36,16 @@
 
   function send() {
     ;(async () => {
-      await sendMessage.mutate({
+      const message = await sendMessage.mutate({
         init: {
           content: messageContent,
           recipient: 'user:' + currentConvo.id,
         },
       })
 
-      messageContent = ''
+      console.log(message)
 
-      await getConvo.loadNextPage()
+      messageContent = ''
     })()
   }
 
@@ -60,7 +61,6 @@
     }
   }
 
-  let prevScY = window.scrollY
   let messagesGrouped: [string, Message[]][] = []
 
   $: messagesGrouped = Array.from(
@@ -73,34 +73,50 @@
       })
     }).entries()
   )
+
+  // scroll the fuck down
+  function stfd(_: HTMLDivElement) {
+    if (bonk === undefined || bonk.dataset.hasBonked === 'true') return { destroy() {} }
+    bonk.scrollTop = bonk.scrollHeight
+    bonk.dataset.hasBonked = 'true'
+
+    return {
+      destroy() {
+        bonk?.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
+      },
+    }
+  }
+
+  let bonk: HTMLDivElement | undefined = undefined
+  let prevScY = 0
 </script>
 
-<svelte:window
-  on:scroll={(_) => {
-    ;(async () => {
-      const scY = window.scrollY
-      if (prevScY < scY) {
-        // down
-        await getConvo.loadNextPage()
-      } else {
-        // up
-        await getConvo.loadPreviousPage()
-      }
-      prevScY = window.scrollY
-    })()
-  }}
-/>
-
 <div
-  class="scrollbar-rmrf relative flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col"
+  class="relative flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col overflow-hidden"
 >
   <div class="flex w-full flex-row font-medium">
     <Status status={currentConvo.status} class="mr-1 self-center" />
     {currentConvo.displayName}
   </div>
-  <div class="scrollerContent">
+  <div class="scrollerContent" bind:this={bonk} on:scroll={(n) => {
+    ;(async () => {
+      const node = n.currentTarget
+      const scY = node.scrollTop
+      if (prevScY < scY) {
+        // why
+      } else {
+        // up
+        await getConvo.loadPreviousPage()
+      }
+      prevScY = node.scrollTop
+    })()
+  }}>
     <ol class="scrollerInner">
       {#if messages.length !== 0}
+        <div use:stfd />
         {#each messagesGrouped as [day, messagess]}
           <div class="date-breaker flex" role="separator" aria-label={day}>
             <span class="date-breaker-inner">{day}</span>
@@ -139,17 +155,21 @@
       {/if}
     </ol>
   </div>
-  <div
-    class="space-between flex w-full flex-row justify-end rounded-md bg-gray-700 outline outline-zinc-300"
+
+  <form
+    on:submit|preventDefault={send}
+    class="space-between z-[2] flex w-full flex-row justify-end rounded-md bg-gray-700 outline outline-zinc-300"
   >
+    <!-- svelte-ignore a11y-autofocus -->
     <input
+      autofocus
       bind:value={messageContent}
       class="w-full bg-transparent text-black dark:text-white"
     />
-    <button on:click={send}>
+    <button>
       <MdiSend class="text-sky-600" />
     </button>
-  </div>
+  </form>
 </div>
 
 <style lang="scss">
@@ -186,7 +206,6 @@
     .date-breaker-inner {
       @apply bg-gray-800;
       border: none;
-      z-index: 2;
       display: block;
       padding: 2px 4px;
       flex: 0 0 auto;
@@ -197,6 +216,7 @@
   }
 
   .scrollerContent {
+    overflow-y: scroll;
     overflow-anchor: none;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -209,6 +229,21 @@
     -ms-flex-align: stretch;
     align-items: stretch;
     min-height: 100%;
+    scrollbar-width: auto;
+    scrollbar-color: theme('colors.stone.900');
+
+    &::-webkit-scrollbar {
+      @apply h-4 w-4;
+    }
+    &::-webkit-scrollbar-thumb {
+      @apply bg-stone-900;
+      background-clip: padding-box;
+      border: 4px solid transparent;
+      border-radius: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      @apply bg-gray-800;
+    }
   }
 
   .scrollerInner {
@@ -216,11 +251,10 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: auto;
   }
 
   .scrollerSpacer {
     height: 0;
-    margin-top: minmax(0, 1rem);
+    margin-top: 1rem;
   }
 </style>

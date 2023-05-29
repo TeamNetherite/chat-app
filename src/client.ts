@@ -33,47 +33,9 @@ export default new HoudiniClient({
     subscription(() =>
       createClient({
         url: `ws://${SERVER_URL}/graphql-subscription`,
-        connectionParams: async () => {
-          let tokens = {
-            access: null as string | null,
-            refresh: null as string | null,
-          };
-          const tokensCurrent: Partial<typeof tokens> = {
-            access: localStorage.getItem("netheritechataccesstoken") ?? null,
-            refresh: localStorage.getItem("netheritechatrefreshtoken") ?? null,
-          };
-
-          tokens.access = tokensCurrent.access ?? null;
-          tokens.refresh = tokensCurrent.refresh!;
-
-          const isActive = {
-            access: tokens.access
-              ? (await (await fetch(
-                `${SERVER_URL}/auth/isactive?token=${tokens.access}`,
-                { method: "GET" },
-              )).json()) as boolean
-              : false,
-            refresh: (await (await fetch(
-              `${SERVER_URL}/auth/isactive?token=${tokens.refresh}`,
-              { method: "GET" },
-            )).json()) as boolean,
-          };
-
-          if (!isActive.access) {
-            const nextTokens = await refresh(
-              true,
-              fetch,
-              isActive.refresh ? tokens.refresh : null,
-            );
-
-            tokens = nextTokens!;
-          }
+        connectionParams() {
           return {
-            headers: {
-              Authorization: `Bearer ${
-                tokens.access
-              }`,
-            },
+            accessToken: localStorage.getItem("netheritechataccesstoken"),
           };
         },
       })

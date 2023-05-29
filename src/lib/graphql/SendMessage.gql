@@ -3,12 +3,15 @@ mutation SendMessage($init:MessageInit!) {
     id
     author {
       id
+      tag
       displayName
     }
+    createdAt
     content
     recipient {
       asUser {
         id
+        tag
         displayName
       }
     }
