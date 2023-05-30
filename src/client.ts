@@ -1,9 +1,8 @@
 import { HoudiniClient, subscription } from "$houdini";
-import { refresh } from "$lib/auth";
 import { error } from "@sveltejs/kit";
 import { createClient } from "graphql-ws";
 
-const SERVER_URL = "localhost:8188";
+const SERVER_URL = "192.168.31.55:8188";
 
 export default new HoudiniClient({
   url: `http://${SERVER_URL}/graphql`,

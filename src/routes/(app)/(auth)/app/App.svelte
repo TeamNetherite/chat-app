@@ -1,52 +1,44 @@
 <script lang="ts">
-  import type { Conversations$result } from '$houdini'
-  import Status from '$lib/Status.svelte'
+  import moss from '../../../../../assets/moss.png'
   import Divider from '$lib/nui/Divider.svelte'
-  import type { ArrayOf } from '$lib/typemagic'
-  import Chat from './Chat.svelte'
+  import type { SelectionThing } from '$lib/graphql'
+  import ShitDisplay from './ShitDisplay.svelte'
 
-  export let convos: NonNullable<
-    ArrayOf<Conversations$result['conversations']>['recipient']['asUser']
-  >[]
-  export let currentConvo: ArrayOf<typeof convos> = convos[0] ?? null
+  export let selection: SelectionThing = { type: 'dm' }
 </script>
 
 <div class="scrollbar-rmrf flex flex-row flex-1 gap-1 h-full min-h-full max-h-screen">
   <ul class="server-list">
-    <li>
-      <button> W </button>
+    <li style:background-image="url({moss})" style:background-size="cover" data-selected={selection.type === 'dm'}>
+      <div class="plink" aria-selected={selection.type === 'dm'} />
+      <button on:click={() => selection = { type: 'dm' }} />
     </li>
     <Divider class="bg-stone-700 mx-1" />
   </ul>
 
-  <div class="flex flex-col w-[20%]">
-    <ul class="flex flex-col gap-0.5">
-      {#each convos as convo (convo.id)}
-        <li>
-        <button
-          class="flex flex-row bg-"
-          on:click={() => (currentConvo = convo)}
-        >
-          <Status status={convo.status} class="self-center mr-1" />
-          {convo.displayName}
-        </button>
-        </li>
-      {/each}
-    </ul>
-  </div>
-
-  {#if currentConvo !== null}
-    <Chat {currentConvo} />
-  {/if}
+  <ShitDisplay sel={selection} />
 </div>
 
 <style lang="scss">
   .server-list {
-    @apply flex flex-col mt-2 w-[5%];
+    @apply flex flex-col mt-5 w-[5%];
     > li {
-      @apply w-full h-8 flex;
+      > .plink:only-of-type {
+        position: absolute;
+        
+        &:not([aria-selected="true"]) {
+          display: none;
+        }
+
+        &[aria-selected="true"] {
+          display: block;
+          transition: left 0.3s ease-in-out;
+          left: 10px;
+        }
+      }
+      @apply w-12 h-12 flex flex-row justify-center items-center self-center content-center data-[selected]:rounded-[25%] hover:rounded-[25%];
       > button {
-        @apply w-full h-full self-center justify-center;
+        @apply w-full h-full inline-flex bg-repeat-space;
       }
     }
   }

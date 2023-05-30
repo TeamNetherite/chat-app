@@ -7,7 +7,7 @@ const config = {
     "houdini-svelte": {},
   },
   types: {
-    MessageConnection: {
+    Conversation: {
       keys: ['id']
     }
   }

@@ -1,4 +1,4 @@
-mutation SendMessage($init:MessageInit!) {
+mutation SendMessage($init:MessageInit!, $userId:ID!) {
   sendMessage(message: $init) {
     id
     author {
@@ -15,5 +15,6 @@ mutation SendMessage($init:MessageInit!) {
         displayName
       }
     }
+    ...Chat_Messages_insert @parentID(value: $userId)
   }
 }

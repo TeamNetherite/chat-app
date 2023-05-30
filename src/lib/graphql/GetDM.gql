@@ -1,6 +1,6 @@
-query GetDM($userId: ID!) {
+query GetDM($userId: ID!) @cache(policy: CacheAndNetwork) {
   conversationDirect(recipient: $userId) {
-    messages(last: 20) @paginate(mode: Infinite) {
+    messages(last: 20) @paginate(mode: Infinite, name: "Chat_Messages") {
       edges {
         node {
           id
@@ -19,9 +19,6 @@ query GetDM($userId: ID!) {
             }
           }
         }
-      }
-      pageInfo {
-        hasNextPage
       }
     }
   }

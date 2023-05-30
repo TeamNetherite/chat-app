@@ -1,4 +1,4 @@
-query Conversations {
+query Conversations @cache(policy: CacheAndNetwork) {
   conversations {
     recipient {
       asUser {

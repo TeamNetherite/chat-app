@@ -32,3 +32,11 @@ export function groupBy<K, V>(list: Array<V>, keyGetter: (input: V) => K): Map<K
     return map;
 }
 
+
+export function unnull<T>(val: T | null | undefined): T {
+  return val!;
+}
+
+export function cast<T>(val: unknown): T {
+  return val as T;
+}

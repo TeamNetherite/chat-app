@@ -5,15 +5,13 @@
     type GetDM$result,
     SendMessageStore,
     SentMessagesStore,
-    MeStore,
   } from '$houdini'
   import MdiSend from '~icons/mdi/send'
-  import { type ArrayOf, groupBy } from '$lib/typemagic'
+  import { type ArrayOf, groupBy, uniqueBy } from '$lib/typemagic'
   import Status from '$lib/Status.svelte'
 
-  type Message = Omit<ArrayOf<
-    GetDM$result['conversationDirect']['messages']['edges']
-  >, "node">
+  type Message = ArrayOf<
+    GetDM$result['conversationDirect']['messages']['edges']>['node']
 
   export let currentConvo: NonNullable<
     ArrayOf<Conversations$result['conversations']>['recipient']['asUser']
@@ -26,9 +24,9 @@
   let messages: Array<Message> = []
 
   $: messages =
-    $getConvo.data?.conversationDirect?.messages?.edges?.map(
-      (edge) => edge as Message
-    ) ?? messages
+    uniqueBy($getConvo.data?.conversationDirect?.messages?.edges?.map(
+      (edge) => edge.node as Message
+    ) ?? [], m => m.id) ?? messages
 
   let messageContent = ''
 
@@ -41,9 +39,15 @@
           content: messageContent,
           recipient: 'user:' + currentConvo.id,
         },
+        userId: 'user:' + currentConvo.id,
       })
 
+      if (bonk) {
+        bonk.scrollTo({ top: bonk.scrollHeight, behavior: 'auto' })
+      }
+
       console.log(message)
+      //messages = [...messages, message.data!.sendMessage!]
 
       messageContent = ''
     })()
@@ -64,7 +68,7 @@
   let messagesGrouped: [string, Message[]][] = []
 
   $: messagesGrouped = Array.from(
-    groupBy(messages, (m) => {
+    groupBy(messages.sort((vA, vB) => Date.parse(vA.createdAt) - Date.parse(vB.createdAt)), (m) => {
       const date = new Date(Date.parse(m.createdAt))
       return date.toLocaleDateString(undefined, {
         year: 'numeric',
@@ -106,8 +110,8 @@
       const node = n.currentTarget
       const scY = node.scrollTop
       if (prevScY < scY) {
-        // why
-      } else {
+        // down
+      } else if (prevScY > scY && $getConvo.pageInfo.hasPreviousPage) {
         // up
         await getConvo.loadPreviousPage()
       }
@@ -121,7 +125,7 @@
           <div class="date-breaker flex" role="separator" aria-label={day}>
             <span class="date-breaker-inner">{day}</span>
           </div>
-          {#each messagess as message (message.id)}
+          {#each messagess as message}
             <li
               class="message"
               id="chat-message-{currentConvo.id}-{message.id.replace(
@@ -229,6 +233,7 @@
     -ms-flex-align: stretch;
     align-items: stretch;
     min-height: 100%;
+    height: 100%;
     scrollbar-width: auto;
     scrollbar-color: theme('colors.stone.900');
 
@@ -249,6 +254,7 @@
   .scrollerInner {
     @apply bg-gray-800;
     min-height: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
   }

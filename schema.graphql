@@ -12,7 +12,8 @@ enum Badge {
 type Conversation {
   author: User!
   getAllMessages: [Message!]!
-  messages(after: String, before: String, first: Int, last: Int): NodediConnection!
+  id: String!
+  messages(after: String, before: String, first: Int, last: Int): MessageConnection!
   recipient: MessageRecipient!
 }
 
@@ -22,6 +23,26 @@ type Message {
   createdAt: String!
   id: ID!
   recipient: MessageRecipient!
+}
+
+type MessageConnection {
+  """A list of edges."""
+  edges: [MessageEdge!]!
+
+  """A list of nodes."""
+  nodes: [Message!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""An edge in a connection."""
+type MessageEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The item at the end of the edge"""
+  node: Message!
 }
 
 input MessageInit {
@@ -37,35 +58,6 @@ type MutationRoot {
   addFriend(other: String!): User
   sendMessage(message: MessageInit!): Message!
   setStatus(status: Status!): User!
-}
-
-type Nodedi {
-  author: User!
-  content: String!
-  createdAt: String!
-  cursor: Int!
-  id: ID!
-  recipient: MessageRecipient!
-}
-
-type NodediConnection {
-  """A list of edges."""
-  edges: [NodediEdge!]!
-
-  """A list of nodes."""
-  nodes: [Nodedi!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-}
-
-"""An edge in a connection."""
-type NodediEdge {
-  """A cursor for use in pagination"""
-  cursor: String!
-
-  """The item at the end of the edge"""
-  node: Nodedi!
 }
 
 """Information about pagination in a connection"""
