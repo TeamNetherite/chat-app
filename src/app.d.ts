@@ -1,5 +1,6 @@
 /// <reference types="@sveltejs/kit" />
 /// <reference types="unplugin-icons/types/svelte" />
+/// <reference types="houdini-svelte" />
 
 declare namespace App {
   interface Session {

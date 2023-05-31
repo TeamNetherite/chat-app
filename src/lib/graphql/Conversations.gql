@@ -7,6 +7,11 @@ query Conversations @cache(policy: CacheAndNetwork) {
         displayName
         status
       }
+      asChannel {
+        id
+        name
+      }
+      kind
     }
   }
 }

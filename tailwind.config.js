@@ -80,8 +80,14 @@ export default {
         },
         base1984: {
           muted: 'hsl(214 8.1% 61.2% / 1)'
+        },
+        height: {
+          dscreen: '100dvh'
+        },
+        width: {
+          dscreen: '100dvw'
         }
-      },
+      }
     },
   },
   plugins: [typography],

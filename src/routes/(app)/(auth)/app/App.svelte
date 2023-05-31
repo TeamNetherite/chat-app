@@ -1,13 +1,9 @@
 <script lang="ts">
   import moss from '../../../../../assets/moss.png'
   import Divider from '$lib/nui/Divider.svelte'
-  import type { SelectionThing } from '$lib/graphql'
-  import ShitDisplay from './ShitDisplay.svelte'
-
-  export let selection: SelectionThing = { type: 'dm' }
 </script>
 
-<div class="scrollbar-rmrf flex flex-row flex-1 gap-1 h-full min-h-full max-h-screen">
+<div class="scrollbar-rmrf flex flex-row flex-1 gap-5 h-full min-h-full max-h-screen">
   <ul class="server-list">
     <li style:background-image="url({moss})" style:background-size="cover" data-selected={selection.type === 'dm'}>
       <div class="plink" aria-selected={selection.type === 'dm'} />

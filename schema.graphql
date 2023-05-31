@@ -47,11 +47,28 @@ type MessageEdge {
 
 input MessageInit {
   content: String!
-  recipient: ID!
+  recipient: MessageRecipientIn!
 }
 
 type MessageRecipient {
+  asChannel: TextableChannel
   asUser: User
+  kind: MessageRecipientKind!
+}
+
+input MessageRecipientIn {
+  id: ID!
+  type: MessageRecipientInKind!
+}
+
+enum MessageRecipientInKind {
+  CHANNEL
+  USER
+}
+
+enum MessageRecipientKind {
+  CHANNEL
+  USER
 }
 
 type MutationRoot {
@@ -90,6 +107,17 @@ enum Status {
 
 type SubscriptionRoot {
   messages: Message!
+}
+
+type TextChannel implements TextableChannel {
+  guild: ID!
+  id: ID!
+  name: String!
+}
+
+interface TextableChannel {
+  id: ID!
+  name: String!
 }
 
 type User {

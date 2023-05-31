@@ -1,4 +1,6 @@
-<script>
-  import '../App.scss';
+<script lang="ts">
+  import '../App.scss'
 </script>
-<div><slot /></div>
+<div class="full-viewport">
+  <slot />
+</div>
