@@ -28,7 +28,7 @@
       {message.content}
     </div>
   </div>
-  <Popover triggeredBy='#message-data-{mid}' placement='top-end' offset={-10} arrow={false} class="bg-gray-600" defaultClass="bg-gray-600">
+  <Popover triggeredBy='#message-data-{mid}' trigger='hover' placement='top-end' offset={-10} arrow={false} class="bg-gray-600" defaultClass="bg-gray-600">
     <Toolbar color='none' embedded class='bg-gray-600'>
       <ToolbarButton>
         <MdiReply />

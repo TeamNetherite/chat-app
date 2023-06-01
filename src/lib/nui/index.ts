@@ -27,6 +27,7 @@ export { default as BreadcrumbItem } from './breadcrumbs/BreadcrumbItem.svelte';
 // Buttons
 export { default as Button } from './buttons/Button.svelte';
 export { default as GradientButton } from './buttons/GradientButton.svelte';
+export { default as WtfGradientButton } from './buttons/WtfGradientButton.svelte';
 
 // Buttongroups
 export { default as ButtonGroup } from './buttongroups/ButtonGroup.svelte';
@@ -136,6 +137,7 @@ export { default as Thumbup } from './ratings/Thumbup.svelte';
 // Sidebar
 export { default as Sidebar } from './sidebars/Sidebar.svelte';
 export { default as SidebarItem } from './sidebars/SidebarItem.svelte';
+export { default as SidebarButton } from './sidebars/SidebarButton.svelte';
 export { default as SidebarBrand } from './sidebars/SidebarBrand.svelte';
 export { default as SidebarCta } from './sidebars/SidebarCta.svelte';
 export { default as SidebarDropdownItem } from './sidebars/SidebarDropdownItem.svelte';

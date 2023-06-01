@@ -1,0 +1,11 @@
+.thinggg:hover {
+  animation: bg-thing 1s linear;
+}
+@keyframes bg-thing {
+  0% {
+    background-position: center 1000%;
+  }
+  100% {
+    background-position: center 0%;
+  }
+}

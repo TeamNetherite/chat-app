@@ -9,6 +9,11 @@ enum Badge {
   MODERATOR
 }
 
+type ById {
+  message(id: ID!): Message
+  user(id: ID!): User
+}
+
 type Conversation {
   author: User!
   getAllMessages: [Message!]!
@@ -93,6 +98,7 @@ type PageInfo {
 }
 
 type QueryRoot {
+  byId: ById!
   conversationDirect(recipient: ID!): Conversation!
   conversations: [Conversation!]!
   me: User!

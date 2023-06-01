@@ -40,3 +40,14 @@ export function unnull<T>(val: T | null | undefined): T {
 export function cast<T>(val: unknown): T {
   return val as T;
 }
+
+export function toTitleCase(str: string) {
+  return str.replace(
+    /\w\S*/g,
+    txt => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()
+  );
+}
+
+export function screamingSnakeToTitle(s: string): string {
+  return s.replace(/^_*(.)|_+(.)/g, (_, c, d) => c ? c.toUpperCase() : ' ' + d.toUpperCase())
+}

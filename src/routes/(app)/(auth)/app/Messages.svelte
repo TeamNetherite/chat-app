@@ -4,12 +4,17 @@
   import { groupBy } from "$lib/typemagic";
   import { createEventDispatcher } from "svelte"
   import MdiSend from '~icons/mdi/send'
+  import Message from './Message.svelte'
 
   export let messages: MessageData[]
   export let recipient: MessageInit['recipient']
 
   const scrollUp = createEventDispatcher()
   
+  let recipientId = ''
+
+  $: recipientId = recipient.type.toLowerCase() + ':' + recipient.id
+
   let messageContent = ''
 
   const sendMessage = new SendMessageStore()
@@ -19,9 +24,12 @@
       const message = await sendMessage.mutate({
         init: {
           content: messageContent,
-          recipient
+          recipient: {
+            ...recipient,
+            id: recipientId,
+          }
         },
-        recipientId: recipient.type.toLowerCase() + recipient.id,
+        recipientId
       })
 
       if (bonk) {
@@ -91,7 +99,7 @@
           {#each messagess as message}
             <li
               class="message"
-              id="chat-message-{currentConvo.id}-{message.id.replace(
+              id="chat-message-{recipient.id}-{message.id.replace(
                 /^message:/,
                 ''
               )}"

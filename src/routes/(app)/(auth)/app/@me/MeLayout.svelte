@@ -1,10 +1,10 @@
 <script lang="ts">
   import AppLayout from '../AppLayout.svelte'
-  import DMs from '../Chats.svelte'
+  import MeSidebar from '../MeSidebar.svelte'
 </script>
 
 <AppLayout>
-  <DMs slot="channels" />
+  <MeSidebar slot="channels" />
   <svelte:fragment slot="content">
     <slot />
   </svelte:fragment>

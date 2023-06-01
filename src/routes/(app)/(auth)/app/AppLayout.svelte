@@ -4,6 +4,8 @@
   import Divider from '$lib/nui/Divider.svelte'
   import type { Page } from '@sveltejs/kit'
   import { page } from '$app/stores'
+  import { Avatar, List, Listgroup, Sidebar, SidebarGroup, SidebarItem, SidebarWrapper } from '$lib/nui'
+  import { cast, type ArrayOf } from '$lib/typemagic'
 
   type Selection =
     | {
@@ -38,52 +40,39 @@
   }
 
   const selection: Selection = getSelection($page)
+
+  type ServerIguess = {
+    id: string,
+    name: string,
+  }
+
+  let servers: ServerIguess[] = [
+    {
+      id: '12387mtieurtcmerth',
+      name: 'why'
+    }
+  ]
 </script>
 
 <div class="scrollbar-rmrf full-viewport flex flex-row gap-5 w-full">
-  <ul class="server-list">
-    <li
-      style:background-image="url({moss})"
-      style:background-size="cover"
-      data-selected={selection.type === 'dm'}
-    >
-      <button
-        on:click={() => goto('/app/@me')}
-        disabled={selection.type === 'dm'}
-      />
-    </li>
-    <Divider class="mx-1 bg-stone-700" />
-  </ul>
+  <Sidebar asideClass='w-16 ml-2 mt-2'>
+    <SidebarWrapper divClass='w-16'>
+      <SidebarGroup>
+        <SidebarItem href='/app/@me' class="flex flex-col items-center">
+          <Avatar src={moss} slot="icon" />
+        </SidebarItem>
+      </SidebarGroup>
+      <SidebarGroup>
+        {#each servers as server (server.id)}
+          <SidebarItem href='/app/{server.id}' class="flex flex-col items-center">
+            <Avatar id="server-{server.id}-icon" slot="icon" src={moss} />
+          </SidebarItem>
+        {/each}
+      </SidebarGroup>
+    </SidebarWrapper>
+  </Sidebar>
   <slot name="channels">
     <div class="self-center">Uhm...</div></slot
   >
   <slot name="content">GG</slot>
 </div>
-
-<style lang="scss">
-  ul > li {
-    @apply h-8 w-full;
-    &[data-selected='true']::before {
-      content: '';
-      display: block;
-      position: absolute;
-      background-color: white;
-
-      animation: blob-active 1s ease-in;
-    }
-
-    &:hover::before {
-      animation: blob-hover 1s ease-in;
-    }
-  }
-
-  @keyframes blob-active {
-    0% {
-    }
-  }
-
-  @keyframes blob-hover {
-    0% {
-    }
-  }
-</style>

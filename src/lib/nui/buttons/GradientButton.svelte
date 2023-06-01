@@ -72,6 +72,7 @@
       ? ($$props.pill && 'first:rounded-l-full last:rounded-r-full') ||
           'first:rounded-l-lg last:rounded-r-lg'
       : ($$props.pill && 'rounded-full') || 'rounded-lg',
+    
     $$props.class
   );
 </script>
@@ -95,7 +96,6 @@
     on:mouseenter
     on:mouseleave><slot /></Button>
 {/if}
-
 <!--
   @component
   ## Features

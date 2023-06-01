@@ -26,7 +26,7 @@ a {
 }
 
 body, body > div, body > div > div {
-  @apply bg-white text-black dark:bg-background dark:text-white;
+  @apply bg-light text-black dark:bg-dark dark:text-white;
   width: 100dvw;
   height: 100dvh;
 }
@@ -40,10 +40,16 @@ body, body > div, body > div > div {
   scrollbar-width: none;
 }
 
-$statuses: ("online": theme('colors.green.500'), "idle": theme('colors.yellow.500'), "dnd": theme('colors.red.500'), "offline": theme('colors.gray.500'));
+$statuses: ("online": theme('colors.green.500'), "idle": theme('colors.yellow.500'), "do_not_disturb": theme('colors.red.500'), "offline": theme('colors.gray.500'));
 
 @each $status, $color in $statuses {
   .status-#{$status} {
     background-color: $color;
+  }
+}
+
+@layer utilities {
+  .bg-normal {
+    @apply dark:bg-dark bg-light;
   }
 }
