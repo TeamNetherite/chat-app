@@ -6,6 +6,7 @@
   import chevronLeft from '@iconify/icons-mdi/chevron-left'
   import AuthPage from '../AuthPage.svelte'
   import Icon from '@iconify/svelte'
+  import { NETHERITE_CHAT_SERVER_URL as SERVER_URL } from '$env/static/public'
 
   const schemaAuth = z
     .object({
@@ -50,7 +51,18 @@
   }
 
   function actB(data: z.infer<typeof schemaDetails>) {
+    if (!auth) return
     console.log('register', data)
+
+    fetch(`${SERVER_URL}/auth/register`, {
+      method: 'POST',
+      body: JSON.stringify({
+        email: auth.email,
+        password: auth.password,
+        tag: data.tag,
+        display_name: data.displayName,
+      })
+    })
   }
 
   let au = true
