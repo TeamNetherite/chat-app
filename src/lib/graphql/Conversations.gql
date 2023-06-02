@@ -8,7 +8,7 @@ query Conversations @cache(policy: CacheAndNetwork) {
         status
       }
       asChannel {
-        id
+        identifier
         name
       }
       kind

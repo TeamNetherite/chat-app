@@ -1,3 +1,5 @@
+import { Status, type ValueOf } from "$houdini";
+
 export type ArrayOf<T> = T extends (infer U)[] ? U : never;
 
 export function uniqueBy<T, K>(array: T[], key: (value: T) => K) {
@@ -50,4 +52,17 @@ export function toTitleCase(str: string) {
 
 export function screamingSnakeToTitle(s: string): string {
   return s.replace(/^_*(.)|_+(.)/g, (_, c, d) => c ? c.toUpperCase() : ' ' + d.toUpperCase())
+}
+
+export function statusColor(status: ValueOf<typeof Status>): 'red' | 'green' | 'yellow' | 'dark' {
+  switch (status) {
+    case Status.ONLINE:
+      return 'green';
+    case Status.DO_NOT_DISTURB:
+      return 'red';
+    case Status.IDLE:
+      return 'yellow'
+    case Status.OFFLINE:
+      return 'dark'
+  }
 }

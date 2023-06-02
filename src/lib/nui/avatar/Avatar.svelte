@@ -11,7 +11,7 @@
   export let stacked: boolean = false;
   export let dot: object | undefined = undefined;
   export let alt: string = '';
-  export let size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
+  export let size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'sm';
 
   $: dot = dot && { placement: 'top-right', color: 'gray', size: 'lg', ...dot };
 

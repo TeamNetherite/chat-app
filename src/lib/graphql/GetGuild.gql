@@ -1,0 +1,20 @@
+query GetGuild($id:ID!) {
+  byId {
+    guild(id:$id) {
+      id
+      name
+      members(first: 30) @paginate {
+        edges {
+          node {
+            nickname
+            user {
+              id
+              tag
+              displayName
+            }
+          }
+        }
+      }
+    }
+  }
+}

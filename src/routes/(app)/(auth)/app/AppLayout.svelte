@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import { GetGuildsStore } from '$houdini'
   import moss from '../../../../../assets/moss.png'
   import Divider from '$lib/nui/Divider.svelte'
   import type { Page } from '@sveltejs/kit'
@@ -39,19 +40,17 @@
     }
   }
 
-  const selection: Selection = getSelection($page)
-
   type ServerIguess = {
     id: string,
     name: string,
   }
 
-  let servers: ServerIguess[] = [
-    {
-      id: '12387mtieurtcmerth',
-      name: 'why'
-    }
-  ]
+  let servers: ServerIguess[] = []
+
+  const getServers_ = new GetGuildsStore
+
+  $: getServers_.fetch()
+  $: servers = $getServers_.data?.guilds ?? servers
 </script>
 
 <div class="scrollbar-rmrf full-viewport flex flex-row gap-5 w-full">

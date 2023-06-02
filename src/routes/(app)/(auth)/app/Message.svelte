@@ -36,11 +36,11 @@
       <ToolbarButton class='hover:text-red-400 transition-colors duration-500'>
         <MdiDelete />
       </ToolbarButton>
-      <ToolbarButton id='{mid}-moar'>
+      <ToolbarButton id='moar-{mid}'>
         <MdiMore />
       </ToolbarButton>
-      
-      <Popover triggeredBy='#{mid}-moar' placement='left' arrow={false} trigger='click' class="bg-gray-600" defaultClass="bg-gray-600">
+
+      <Popover triggeredBy='#moar-{mid}' placement='left' arrow={false} trigger='click' class="bg-gray-600" defaultClass="bg-gray-600">
         <Sidebar>
           <SidebarWrapper divClass="bg-gray-600">
             <SidebarGroup>

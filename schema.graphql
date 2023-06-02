@@ -10,8 +10,21 @@ enum Badge {
 }
 
 type ById {
+  channel(id: ID!): Channel
+  guild(id: ID!): Guild
   message(id: ID!): Message
   user(id: ID!): User
+}
+
+union Channel = TextChannel
+
+input ChannelInit {
+  kind: ChannelKind!
+  name: String!
+}
+
+enum ChannelKind {
+  TEXT
 }
 
 type Conversation {
@@ -22,8 +35,48 @@ type Conversation {
   recipient: MessageRecipient!
 }
 
+type Guild {
+  channels: [Channel!]!
+  createChannel(init: ChannelInit!): Channel!
+  id: ID!
+  members(after: String, before: String, first: Int, last: Int): MemberConnection!
+  name: String!
+  roles: [Role!]!
+}
+
+input GuildInit {
+  name: String!
+}
+
+type Member {
+  nickname: String
+  roles: [Role!]!
+  user: User!
+}
+
+type MemberConnection {
+  """A list of edges."""
+  edges: [MemberEdge!]!
+
+  """A list of nodes."""
+  nodes: [Member!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""An edge in a connection."""
+type MemberEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The item at the end of the edge"""
+  node: Member!
+}
+
 type Message {
   author: User!
+  canDelete: Boolean!
   content: String!
   createdAt: String!
   id: ID!
@@ -78,7 +131,9 @@ enum MessageRecipientKind {
 
 type MutationRoot {
   addFriend(other: String!): User
+  createGuild(guild: GuildInit!): Guild!
   sendMessage(message: MessageInit!): Message!
+  setAvatar(avatar: Upload!): User!
   setStatus(status: Status!): User!
 }
 
@@ -97,11 +152,45 @@ type PageInfo {
   startCursor: String
 }
 
+"""The possible permissions of a user or role in a guild."""
+enum Permission {
+  ADMINISTRATOR
+
+  """A user with this permission may ban another user from the guild."""
+  BAN
+
+  """A user with this permission may create invitation links to the guild."""
+  INVITE
+
+  """A user with this permission may remove another user from the guild."""
+  KICK
+  MANAGE_CHANNELS
+  MANAGE_EMOJIS
+  MANAGE_MESSAGES
+  MANAGE_ROLES
+  MANAGE_SERVER
+  MANAGE_WEBHOOKS
+  SEND_MESSAGES
+
+  """
+  A user with this permission may time another user out from the guild.
+  Read [Timeout](super::audit::Timeout) docs for more info on what a time out is.
+  """
+  TIMEOUT
+}
+
 type QueryRoot {
   byId: ById!
   conversationDirect(recipient: ID!): Conversation!
   conversations: [Conversation!]!
+  guilds: [Guild!]!
   me: User!
+}
+
+type Role {
+  color: Int!
+  name: String!
+  permissions: [Permission!]!
 }
 
 enum Status {
@@ -117,14 +206,17 @@ type SubscriptionRoot {
 
 type TextChannel implements TextableChannel {
   guild: ID!
-  id: ID!
+  identifier: ID!
   name: String!
+  talk: Conversation!
 }
 
 interface TextableChannel {
-  id: ID!
+  identifier: ID!
   name: String!
 }
+
+scalar Upload
 
 type User {
   badges: [Badge!]!

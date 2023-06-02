@@ -7,9 +7,12 @@
 @tailwind components;
 @tailwind utilities;
 
-.full-viewport {
-  height: 100dvh;
-  width: 100dvw;
+@layer utilities {
+  .full-viewport {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .g-prose {
@@ -25,10 +28,15 @@ a {
   text-decoration-line: none;
 }
 
-body, body > div, body > div > div {
-  @apply bg-light text-black dark:bg-dark dark:text-white;
-  width: 100dvw;
-  height: 100dvh;
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+body, body > div {
+  @apply bg-light text-black dark:bg-dark dark:text-white full-viewport;
 }
 
 .scrollbar-rmrf::-webkit-scrollbar {

@@ -1,0 +1,25 @@
+query GetSmallDM($userId:ID!) {
+  conversationDirect(recipient: $userId) {
+    messages(last: 1) {
+      edges {
+        node {
+          id
+          content
+          createdAt
+          author {
+            id
+            tag
+            displayName
+          }
+          recipient {
+            asUser {
+              id
+              tag
+              displayName
+            }
+          }
+        }
+      }
+    }
+  }
+}

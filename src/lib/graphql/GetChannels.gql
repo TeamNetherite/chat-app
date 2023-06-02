@@ -1,0 +1,13 @@
+query GetChannels($guild:ID!) {
+  byId {
+    guild(id: $guild) {
+      id
+      channels {
+        ... on TextChannel {
+          identifier
+          name
+        }
+      }
+    }
+  }
+}

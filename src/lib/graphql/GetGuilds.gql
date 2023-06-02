@@ -1,0 +1,13 @@
+query GetGuilds {
+  guilds {
+    id
+    name
+    channels {
+      ... on TextChannel {
+        name
+        identifier
+      }
+      __typename
+    }
+  }
+}

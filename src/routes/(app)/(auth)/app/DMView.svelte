@@ -1,13 +1,15 @@
 <script lang="ts">
+  import { NETHERITE_CHAT_SERVER_URL as SERVER_URL } from '$env/static/public'
   import {
     GetDMStore,
     type Conversations$result,
     SentMessagesStore,
   } from '$houdini'
   import type { MessageData } from '$lib/graphql'
-  import { type ArrayOf, uniqueBy } from '$lib/typemagic'
-  import Status from '$lib/Status.svelte'
+  import { type ArrayOf, uniqueBy, statusColor } from '$lib/typemagic'
   import Messages from './Messages.svelte'
+  import { Avatar } from '$lib/nui'
+  import moss from '$lib/../../assets/moss.png'
 
   export let recipient: NonNullable<ArrayOf<Conversations$result['conversations']>['recipient']['asUser']>
 
@@ -38,8 +40,8 @@
 <div
   class="relative flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col overflow-hidden"
 >
-  <div class="flex w-full flex-row font-medium">
-    <Status status={recipient.status} class="mr-1 self-center" />
+  <div class="flex w-full flex-row font-medium gap-2 my-2 items-center">
+    <Avatar src={moss} dot={{ placement: 'bottom-right', color: statusColor(recipient.status) }} size="sm" />
     {recipient.displayName}
   </div>
 
