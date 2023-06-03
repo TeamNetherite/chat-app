@@ -8,10 +8,13 @@
 </div>
 
 <style lang="scss">
+  :global(body, body > div) {
+    @apply bg-gray-700;
+  }
   #gloryx-header {
-    @apply flex flex-row m-6 w-screen;
+    @apply flex flex-row m-6 w-screen items-center bg-gray-700;
     #title {
-      @apply font-heading p-4 dark:text-white text-black justify-start;
+      @apply font-heading p-4 dark:text-white text-black justify-start self-end mb-0;
       #h {
         @apply text-transparent;
         background-image: url(/assets/0198273icsahn9ew8rnaioeuw0ekt.png);
@@ -23,7 +26,8 @@
       }
     }
     #open-netherite {
-      @apply bg-gray-50 rounded-sm text-black;
+      @apply dark:bg-gray-200 rounded-2xl py-1 px-2 text-black h-min;
+      text-decoration: none;
     }
     border-bottom: 3px dashed theme("colors.gray.600");
   }

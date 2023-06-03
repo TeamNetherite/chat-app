@@ -1,4 +1,4 @@
-import { MeStore, type Conversations$result, type GetDM$result, type Me$result } from "$houdini";
+import { MeStore, type Conversations$result, type GetDM$result, type Me$result, type GetChannelConvo$result } from "$houdini";
 import type { ArrayOf } from "./typemagic";
 
 export type Convo = NonNullable<
@@ -20,6 +20,8 @@ export type SelectionThing =
 export type MessageData = ArrayOf<
   GetDM$result["conversationDirect"]["messages"]["edges"]
 >["node"];
+
+export type ChannelMessageData = ArrayOf<NonNullable<GetChannelConvo$result['byId']['channel']>['talk']['messages']['edges']>['node']
 
 export type UserData = Omit<Me$result["me"], "friends">;
 

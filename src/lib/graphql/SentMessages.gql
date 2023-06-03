@@ -14,6 +14,11 @@ subscription SentMessages {
         tag
         displayName
       }
+      asChannel {
+        identifier
+        name
+        __typename
+      }
     }
   }
 }

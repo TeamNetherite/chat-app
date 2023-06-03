@@ -1,11 +1,11 @@
 <script lang="ts">
   import { Popover, Toolbar, ToolbarButton, Sidebar, SidebarGroup, SidebarWrapper, SidebarItem } from '$lib/nui'
-  import { type MessageData, type UserData, ME } from '$lib/graphql'
+  import { type MessageData, type UserData, ME, type ChannelMessageData } from '$lib/graphql'
   import MdiMore from '~icons/mdi/dots-horizontal'
   import MdiDelete from '~icons/mdi/delete'
   import MdiReply from '~icons/mdi/reply'
 
-  export let message: MessageData
+  export let message: MessageData | ChannelMessageData
 
   const mid = message.id.replace(/^message:/, "")
   const me: UserData = $ME.data!.me

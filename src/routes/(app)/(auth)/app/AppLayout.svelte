@@ -1,44 +1,7 @@
 <script lang="ts">
-  import { goto } from '$app/navigation'
   import { GetGuildsStore } from '$houdini'
   import moss from '../../../../../assets/moss.png'
-  import Divider from '$lib/nui/Divider.svelte'
-  import type { Page } from '@sveltejs/kit'
-  import { page } from '$app/stores'
-  import { Avatar, List, Listgroup, Sidebar, SidebarGroup, SidebarItem, SidebarWrapper } from '$lib/nui'
-  import { cast, type ArrayOf } from '$lib/typemagic'
-
-  type Selection =
-    | {
-        type: 'dm'
-        current: string | null
-      }
-    | {
-        type: 'guild'
-        guild: string
-        channel: string | null
-      }
-
-  function getSelection(pageStore: Page): Selection {
-    const url = pageStore.url
-
-    if (!url.pathname.startsWith('/app/@me')) {
-      const [guild, channel] = url.pathname.split('/')
-
-      return {
-        type: 'guild',
-        guild,
-        channel: channel ? channel : null,
-      }
-    }
-
-    return {
-      type: 'dm',
-      current: url.pathname.startsWith('/app/@me')
-        ? url.pathname.split('/').at(-1) ?? null
-        : null,
-    }
-  }
+  import { Avatar, Sidebar, SidebarGroup, SidebarItem, SidebarWrapper } from '$lib/nui'
 
   type ServerIguess = {
     id: string,

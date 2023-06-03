@@ -1,7 +1,32 @@
 query GetChannelConvo($channel:ID!) {
   byId {
     channel(id: $channel) {
-  __typename
+      __typename
+      ... on TextChannel {
+        talk {
+          messages(last: 30) @paginate(name: "Channel_Messages", mode: Infinite) {
+            edges {
+              node {
+                id
+                content
+                createdAt
+                author {
+                  id
+                  tag
+                  displayName
+                }
+                recipient {
+                  asChannel {
+                    identifier
+                    name
+                    __typename
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

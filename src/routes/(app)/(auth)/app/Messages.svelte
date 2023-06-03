@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { SendMessageStore, type MessageInit } from "$houdini"
-  import type { MessageData } from "$lib/graphql"
+  import { SendMessageStore, SendChannelMessageStore, type MessageInit } from "$houdini"
+  import type { ChannelMessageData, MessageData } from "$lib/graphql"
   import { groupBy } from "$lib/typemagic";
   import { createEventDispatcher } from "svelte"
   import MdiSend from '~icons/mdi/send'
   import Message from './Message.svelte'
 
-  export let messages: MessageData[]
+  export let messages: (MessageData | ChannelMessageData)[]
   export let recipient: MessageInit['recipient']
 
   const scrollUp = createEventDispatcher()
@@ -17,7 +17,7 @@
 
   let messageContent = ''
 
-  const sendMessage = new SendMessageStore()
+  const sendMessage: SendMessageStore | SendChannelMessageStore = recipient.type === 'CHANNEL' ? new SendChannelMessageStore : new SendMessageStore()
 
   function send() {
     ;(async () => {
@@ -42,7 +42,7 @@
       messageContent = ''
     })()
   }
-  let messagesGrouped: [string, MessageData[]][] = []
+  let messagesGrouped: [string, (MessageData | ChannelMessageData)[]][] = []
 
   $: messagesGrouped = Array.from(
     groupBy(messages.sort((vA, vB) => Date.parse(vA.createdAt) - Date.parse(vB.createdAt)), (m) => {

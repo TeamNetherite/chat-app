@@ -1,0 +1,20 @@
+mutation SendChannelMessage($init:MessageInit!, $recipientId:ID!) {
+  sendMessage(message: $init) {
+    id
+    author {
+      id
+      tag
+      displayName
+    }
+    createdAt
+    content
+    recipient {
+      asUser {
+        id
+        tag
+        displayName
+      }
+    }
+    ...Channel_Messages_insert @parentID(value: $recipientId)
+  }
+}

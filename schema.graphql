@@ -39,6 +39,7 @@ type Guild {
   channels: [Channel!]!
   createChannel(init: ChannelInit!): Channel!
   id: ID!
+  joinConstraint: JoinConstraint!
   members(after: String, before: String, first: Int, last: Int): MemberConnection!
   name: String!
   roles: [Role!]!
@@ -46,6 +47,13 @@ type Guild {
 
 input GuildInit {
   name: String!
+}
+
+enum JoinConstraint {
+  JUST_REGISTERED
+  NONE
+  PHONE
+  VERIFIED_EMAIL
 }
 
 type Member {
