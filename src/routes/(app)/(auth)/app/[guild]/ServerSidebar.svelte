@@ -36,7 +36,7 @@
       />
       <Dialog modal>
         <DialogTrigger>
-          <Button variant='ghost'>
+          <Button variant='ghost' class='p-0'>
             <MdiPlus />
           </Button>
         </DialogTrigger>
@@ -45,6 +45,9 @@
             <DialogTitle>
               Create channel
             </DialogTitle>
+            <DialogDescription>
+              Yeah, you create channels here.
+            </DialogDescription>
           </DialogHeader>
         </DialogContent>
       </Dialog>
@@ -60,8 +63,8 @@
               `/app/${serverId}/${channel.identifier}`}
             aClass={cn(
               'flex items-center p-2 text-base font-normal text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700',
-              (idx === channels.length - 1 && 'rounded-b-xl') || 'rounded-t-md',
-              (idx === 0 && 'rounded-t-xl') || 'rounded-t-md'
+              idx + 1 === channels.length ? 'rounded-b-xl' : 'rounded-b-md',
+              idx === 0 ? 'rounded-t-xl' : 'rounded-t-md'
             )}
           >
             <MdiHash slot="icon" />

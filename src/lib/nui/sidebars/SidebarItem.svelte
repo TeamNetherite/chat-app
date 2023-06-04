@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { cn } from '$lib/typemagic'
   import classNames from 'classnames';
 
   export let aClass: string =
@@ -24,7 +25,7 @@
     on:mouseenter
     on:mouseleave
     on:mouseover
-    class={classNames(active ? activeClass : aClass, $$props.class)}>
+    class={classNames(active ? cn(activeClass, aClass) : aClass, $$props.class)}>
     <slot name="icon" />
     <span class={spanClass}>{label}</span>
     {#if $$slots.subtext}
