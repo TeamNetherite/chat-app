@@ -81,6 +81,10 @@ export default {
         },
         base1984: {
           muted: "hsl(214 8.1% 61.2% / 1)",
+          'bg-light': colors.zinc[400],
+          'bg-dark': colors.zinc[900],
+          'bg-light-secondary': colors.slate[400],
+          'bg-dark-secondary': colors.zinc[800],
         }
       },
       height: {

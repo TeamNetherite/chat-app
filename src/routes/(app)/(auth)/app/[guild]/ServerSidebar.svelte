@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { Divider, Sidebar, SidebarGroup, SidebarItem, SidebarWrapper } from '$lib/nui'
-  import { unnull } from '$lib/typemagic'
+  import { Sidebar, SidebarGroup, SidebarItem, SidebarWrapper } from '$lib/nui'
+  import { Button } from '$lib/nui-next/button'
+  import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '$lib/nui-next/dialog'
+  import { cn, unnull } from '$lib/typemagic'
   import MdiHash from '~icons/mdi/pound'
   import MdiHome from '~icons/mdi/home'
+  import MdiPlus from '~icons/mdi/plus'
   import { page } from '$app/stores'
   import type { GetChannelsStore } from '$houdini'
 
@@ -18,19 +21,48 @@
     divClass="h-full flex flex-col dark:bg-dark-secondary bg-light-secondary p-2 rounded-xl gap-2"
   >
     <SidebarGroup>
-      <SidebarItem label='Home' href='/app/{serverId}' active={$page.url.pathname === `/app/${serverId}`}>
+      <SidebarItem
+        label="Home"
+        href="/app/{serverId}"
+        active={$page.url.pathname === `/app/${serverId}`}
+        class="rounded-xl"
+      >
         <MdiHome slot="icon" />
       </SidebarItem>
     </SidebarGroup>
-    <Divider class='bg-dark-secondary dark:bg-light-secondary' />
-    <SidebarGroup class='flex flex-col gap-1'>
+    <div class="flex w-full items-center">
+      <div
+        class="mx-2 my-2 h-0.5 w-full border-t-0 bg-dark-secondary opacity-100 dark:bg-light-secondary dark:opacity-50"
+      />
+      <Dialog modal>
+        <DialogTrigger>
+          <Button variant='ghost'>
+            <MdiPlus />
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              Create channel
+            </DialogTitle>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </div>
+    <SidebarGroup class="flex flex-col gap-1">
       {#if $GetChannels.data}
         {@const channels = unnull($GetChannels.data.byId.guild).channels}
-        {#each channels as channel (channel.identifier)}
+        {#each channels as channel, idx (channel.identifier)}
           <SidebarItem
             label={channel.name}
             href="/app/{serverId}/{channel.identifier}"
-            active={$page.url.pathname === `/app/${serverId}/${channel.identifier}`}
+            active={$page.url.pathname ===
+              `/app/${serverId}/${channel.identifier}`}
+            aClass={cn(
+              'flex items-center p-2 text-base font-normal text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700',
+              (idx === channels.length - 1 && 'rounded-b-xl') || 'rounded-t-md',
+              (idx === 0 && 'rounded-t-xl') || 'rounded-t-md'
+            )}
           >
             <MdiHash slot="icon" />
           </SidebarItem>

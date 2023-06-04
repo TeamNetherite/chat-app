@@ -3,6 +3,7 @@
   import type { ChannelMessageData } from "$lib/graphql"
   import { type ArrayOf, uniqueBy } from "$lib/typemagic";
   import Messages from "./Messages.svelte";
+  import MdiHash from '~icons/mdi/pound'
 
   export let channel: NonNullable<ArrayOf<Conversations$result['conversations']>['recipient']['asChannel']>
   const getConvo = new GetChannelConvoStore
@@ -36,9 +37,12 @@
 </script>
 
 <div
-  class="relative flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col overflow-hidden"
+  class="relative flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col overflow-hidden mt-5 gap-2"
 >
-  <div class="flex w-full flex-row font-medium">
+  <div class="flex w-full flex-row font-medium gap-2 flex-0 items-center dark:bg-dark-secondary bg-light-secondary px-2 py-1 rounded-t-lg rounded-b-sm">
+    <div class="bg-zinc-700 p-1 rounded-full">
+      <MdiHash class="text-zinc-50" /> 
+    </div>
     {channel.name}
   </div>
 
@@ -47,5 +51,7 @@
     recipient={{ type: 'CHANNEL', id: channel.identifier }}
     on:scrollup={(_) =>
       $getConvo.pageInfo.hasPreviousPage ? getConvo.loadPreviousPage() : void 0}
+    cls='rounded-t-sm rounded-b-sm gap-1.5'
+    iClass='rounded-t-sm rounded-b-lg'
   />
 </div>

@@ -1,4 +1,6 @@
 import { Status, type ValueOf } from "$houdini";
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export type ArrayOf<T> = T extends (infer U)[] ? U : never;
 
@@ -65,4 +67,8 @@ export function statusColor(status: ValueOf<typeof Status>): 'red' | 'green' | '
     case Status.OFFLINE:
       return 'dark'
   }
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }

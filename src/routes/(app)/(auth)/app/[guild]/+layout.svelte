@@ -8,7 +8,7 @@
 </script>
 <AppLayout>
   <ServerSidebar serverId={data.serverId} slot="channels" GetChannels={data.GetChannels} />
-  <div transition:slide={{ axis: 'y' }} class="h-full w-full" slot="content">
+  <div transition:slide={{ axis: 'y' }} class="h-full w-full mr-5" slot="content">
     <slot />
   </div>
 </AppLayout>
