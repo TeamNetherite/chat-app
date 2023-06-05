@@ -11,6 +11,16 @@ query GetDM($userId: ID!) @cache(policy: CacheAndNetwork) {
             tag
             displayName
           }
+          reference {
+            id
+            author {
+              id
+              tag
+              displayName
+            }
+            content
+            createdAt
+          }
           recipient {
             asUser {
               id

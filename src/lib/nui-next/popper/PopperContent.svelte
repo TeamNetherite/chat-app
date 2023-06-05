@@ -2,14 +2,13 @@
   import { Popper as PopperPrimitive, type PopperContentProps } from 'radix-svelte/internal/components/Popper'
   import { getContext } from "svelte"
   import { __POPPER_CX, type PopperCx } from "./constants"
+  type $$Props = PopperContentProps
 
-  interface $$Props extends PopperContentProps {
-
-  }
-
-  const cx: PopperCx = getContext(__POPPER_CX)
+  const cx: PopperCx = getContext(__POPPER_CX) as PopperCx
 </script>
 
 {#if $cx}
-  <PopperPrimitive.Content {...$$props}></PopperPrimitive.Content>
+  <PopperPrimitive.Content {...$$restProps}>
+    <slot close={() => cx.set(false)} />
+  </PopperPrimitive.Content>
 {/if}

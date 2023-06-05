@@ -1,0 +1,7 @@
+mutation DeleteMessage($mid:ID!) {
+  manageMessage(message:$mid) {
+    delete {
+      id @Message_delete
+    }
+  }
+}

@@ -10,6 +10,16 @@ query GetChannelConvo($channel:ID!) {
                 id
                 content
                 createdAt
+                reference {
+                  id
+                  author {
+                    id
+                    tag
+                    displayName
+                  }
+                  content
+                  createdAt
+                }
                 author {
                   id
                   tag

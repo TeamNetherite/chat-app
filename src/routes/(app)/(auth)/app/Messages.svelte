@@ -5,15 +5,25 @@
     type MessageInit,
   } from '$houdini'
   import type { ChannelMessageData, MessageData } from '$lib/graphql'
-  import { cn, groupBy } from '$lib/typemagic'
+  import { cn, groupBy, SANITIZE } from '$lib/typemagic'
   import { createEventDispatcher } from 'svelte'
   import MdiSend from '~icons/mdi/send'
   import Message from './Message.svelte'
+  import type { KeyboardEventHandler } from 'svelte/elements'
 
   export let messages: (MessageData | ChannelMessageData)[]
   export let recipient: MessageInit['recipient']
   export let cls = ''
   export let iClass = ''
+
+  let sendForm: HTMLFormElement | undefined
+
+  const keypress: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+    if ((e.key === 'Enter' || e.keyCode === 13) && !e.shiftKey) {
+      e.preventDefault()
+      sendForm?.dispatchEvent(new SubmitEvent('submit'))
+    }
+  }
 
   const scrollUp = createEventDispatcher()
 
@@ -22,7 +32,7 @@
   $: recipientId = recipient.type.toLowerCase() + ':' + recipient.id
 
   let messageContent = ''
-  
+
   $: messageContent = messageContent.substring(0, 2000).trimStart()
 
   const sendMessage: SendMessageStore | SendChannelMessageStore =
@@ -30,15 +40,22 @@
       ? new SendChannelMessageStore()
       : new SendMessageStore()
 
+  let reference: string | undefined = undefined
+
   function send() {
     ;(async () => {
       const message = await sendMessage.mutate({
         init: {
-          content: messageContent.trim(),
+          content: messageContent
+            .trim()
+            .split('')
+            .filter((char) => !SANITIZE.includes(char) || !SANITIZE.includes(`\\${char}`))
+            .join(''),
           recipient: {
             ...recipient,
             id: recipientId,
           },
+          reference,
         },
         recipientId,
       })
@@ -92,7 +109,7 @@
   let prevScY = 0
 </script>
 
-<div class={cn('flex flex-col dark:bg-dark-secondary flex-grow-0', cls)}>
+<div class={cn('flex flex-grow-0 flex-col dark:bg-dark-secondary', cls)}>
   <div
     class="scrollerContent"
     bind:this={bonk}
@@ -125,7 +142,11 @@
                 ''
               )}"
             >
-              <Message {message} />
+              <Message
+                {message}
+                referenced={message.reference}
+                on:setreply={(e) => (reference = e.detail.message.id)}
+              />
             </li>
           {/each}
         {/each}
@@ -141,6 +162,7 @@
       'space-between z-[2] flex max-w-full flex-row justify-between rounded-md bg-gray-700',
       iClass
     )}
+    bind:this={sendForm}
   >
     <!-- svelte-ignore a11y-autofocus -->
     <textarea
@@ -149,8 +171,10 @@
         e.currentTarget.style.height = 'auto'
         e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px'
       }}
+      on:keypress={keypress}
       bind:value={messageContent}
       class="block w-full resize-none overflow-hidden bg-transparent px-2 py-0.5 text-black outline-none focus:outline-none active:outline-none dark:text-white"
+      aria-invalid={messageContent.length === 0}
     />
     <button class="mr-2">
       <MdiSend class="text-sky-600" />
@@ -200,7 +224,6 @@
 
   .scrollerContent {
     overflow-y: auto;
-    overflow-anchor: none;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -233,5 +256,6 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
   }
 </style>

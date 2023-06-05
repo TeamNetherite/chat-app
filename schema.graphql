@@ -16,6 +16,11 @@ type ById {
   user(id: ID!): User
 }
 
+enum Capability {
+  DELETE
+  EDIT
+}
+
 union Channel = TextChannel
 
 input ChannelInit {
@@ -56,6 +61,11 @@ enum JoinConstraint {
   VERIFIED_EMAIL
 }
 
+type ManageMessage {
+  capabilities: [Capability!]!
+  delete: Message!
+}
+
 type Member {
   nickname: String
   roles: [Role!]!
@@ -89,6 +99,7 @@ type Message {
   createdAt: String!
   id: ID!
   recipient: MessageRecipient!
+  reference: Message
 }
 
 type MessageConnection {
@@ -114,6 +125,7 @@ type MessageEdge {
 input MessageInit {
   content: String!
   recipient: MessageRecipientIn!
+  reference: ID
 }
 
 type MessageRecipient {
@@ -140,6 +152,7 @@ enum MessageRecipientKind {
 type MutationRoot {
   addFriend(other: String!): User
   createGuild(guild: GuildInit!): Guild!
+  manageMessage(message: ID!): ManageMessage
   sendMessage(message: MessageInit!): Message!
   setAvatar(avatar: Upload!): User!
   setStatus(status: Status!): User!
