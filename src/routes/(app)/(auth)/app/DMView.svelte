@@ -38,12 +38,12 @@
 </script>
 
 <div
-  class="relative flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col overflow-hidden"
+  class="flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col overflow-hidden"
 >
-  <div class="flex w-full flex-row font-medium gap-2 my-2 items-center">
+  <section class="relative flex-0 flex w-full flex-row font-medium gap-2 my-2 items-center z-[100] h-8">
     <Avatar src={moss} dot={{ placement: 'bottom-right', color: statusColor(recipient.status) }} size="sm" />
     {recipient.displayName}
-  </div>
+  </section>
 
   <Messages
     {messages}

@@ -1,0 +1,6 @@
+mutation SetTheme($theme:Theme!) {
+  setTheme(theme: $theme) {
+    id
+    theme
+  }
+}

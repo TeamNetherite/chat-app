@@ -8,9 +8,6 @@
 </div>
 
 <style lang="scss">
-  :global(body, body > div) {
-    @apply bg-gray-700;
-  }
   #gloryx-header {
     @apply flex flex-row m-6 w-screen items-center bg-gray-700;
     #title {

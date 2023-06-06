@@ -1,6 +1,6 @@
 import typography from "@tailwindcss/typography";
-import colors from 'tailwindcss/colors'
-import plugin from 'tailwindcss/plugin'
+import plugin from "tailwindcss/plugin";
+import animate from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -79,13 +79,47 @@ export default {
           netherite: "#4D4143",
           "netherite-outline": "#3E3232",
         },
-        base1984: {
-          muted: "hsl(214 8.1% 61.2% / 1)",
-          'bg-light': colors.zinc[400],
-          'bg-dark': colors.zinc[900],
-          'bg-light-secondary': colors.slate[400],
-          'bg-dark-secondary': colors.zinc[800],
-        }
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: {
+          DEFAULT: "hsl(var(--background))",
+          secondary: "hsl(var(--background-secondary))",
+        },
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       height: {
         dscreen: "100dvh",
@@ -93,21 +127,16 @@ export default {
       width: {
         dscreen: "100dvw",
       },
-      backgroundColor: {
-        light: colors.zinc[400],
-        dark: colors.zinc[900],
-        'light-secondary': colors.slate[400],
-        'dark-secondary': colors.zinc[800],
-      }
     },
   },
   plugins: [
     typography,
     plugin(({ addComponents }) => {
       addComponents({
-        '.bg-normal': '@apply dark:bg-dark bg-light'
-      })
-    })
+        ".bg-normal": "@apply dark:bg-dark bg-light",
+      });
+    }),
+    animate,
   ],
   darkMode: "class",
 };

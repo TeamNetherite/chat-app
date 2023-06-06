@@ -13,5 +13,6 @@ query Me {
       displayName
       status
     }
+    theme
   }
 }

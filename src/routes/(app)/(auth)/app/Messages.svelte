@@ -49,7 +49,10 @@
           content: messageContent
             .trim()
             .split('')
-            .filter((char) => !SANITIZE.includes(char) || !SANITIZE.includes(`\\${char}`))
+            .filter(
+              (char) =>
+                !SANITIZE.includes(char) || !SANITIZE.includes(`\\${char}`)
+            )
             .join(''),
           recipient: {
             ...recipient,
@@ -109,57 +112,57 @@
   let prevScY = 0
 </script>
 
-<div class={cn('flex flex-grow-0 flex-col dark:bg-dark-secondary', cls)}>
-  <div
-    class="scrollerContent"
-    bind:this={bonk}
-    on:scroll={(n) => {
-      const node = n.currentTarget
-      const scY = node.scrollTop
-      if (prevScY < scY) {
-        // down
-      } else if (prevScY > scY) {
-        // up
-        scrollUp('scrollup', {
-          position: scY,
-        })
-      }
-      prevScY = node.scrollTop
-    }}
-  >
-    <ol class="scrollerInner">
-      {#if messages.length !== 0}
-        <div use:stfd />
-        {#each messagesGrouped as [day, messagess]}
-          <div class="date-breaker flex" role="separator" aria-label={day}>
-            <span class="date-breaker-inner p-2">{day}</span>
-          </div>
-          {#each messagess as message}
-            <li
-              class="message"
-              id="chat-message-{recipient.id}-{message.id.replace(
-                /^message:/,
-                ''
-              )}"
-            >
-              <Message
-                {message}
-                referenced={message.reference}
-                on:setreply={(e) => (reference = e.detail.message.id)}
-              />
-            </li>
+<div class={cn('relative flex h-full flex-grow-0 flex-col', cls)}>
+    <div
+      class="scrollerContent"
+      bind:this={bonk}
+      on:scroll={(n) => {
+        const node = n.currentTarget
+        const scY = node.scrollTop
+        if (prevScY < scY) {
+          // down
+        } else if (prevScY > scY) {
+          // up
+          scrollUp('scrollup', {
+            position: scY,
+          })
+        }
+        prevScY = node.scrollTop
+      }}
+    >
+      <ol class="scrollerInner">
+        {#if messages.length !== 0}
+          <div use:stfd />
+          {#each messagesGrouped as [day, messagess]}
+            <div class="date-breaker flex" role="separator" aria-label={day}>
+              <span class="date-breaker-inner p-2">{day}</span>
+            </div>
+            {#each messagess as message}
+              <li
+                class="message"
+                id="chat-message-{recipient.id}-{message.id.replace(
+                  /^message:/,
+                  ''
+                )}"
+              >
+                <Message
+                  {message}
+                  referenced={message.reference}
+                  on:setreply={(e) => (reference = e.detail.message.id)}
+                />
+              </li>
+            {/each}
           {/each}
-        {/each}
-      {:else}
-        <div class="h-full justify-center">so um. no conversation :(</div>
-      {/if}
-    </ol>
-  </div>
+        {:else}
+          <div class="h-full justify-center">so um. no conversation :(</div>
+        {/if}
+      </ol>
+    </div>
 
   <form
     on:submit|preventDefault={send}
     class={cn(
-      'space-between z-[2] flex max-w-full flex-row justify-between rounded-md bg-gray-700',
+      'space-between relative z-[100] flex max-w-full flex-row justify-between rounded-md bg-background-secondary',
       iClass
     )}
     bind:this={sendForm}
@@ -183,15 +186,9 @@
 </div>
 
 <style lang="scss">
-  .message {
-    @apply flex flex-col pl-5 hover:bg-gray-900;
-  }
-
   .date-breaker {
-    @apply z-[1] mx-3 flex max-w-full justify-center text-sm font-semibold text-base1984-muted;
-    z-index: 1;
+    @apply mx-3 flex max-w-full justify-center border-[thin] border-t-accent text-sm font-semibold text-muted-foreground;
     height: 0;
-    border-top: thin solid theme('colors.stone.700');
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -242,13 +239,13 @@
       @apply h-4 w-4;
     }
     &::-webkit-scrollbar-thumb {
-      @apply bg-stone-900;
+      @apply bg-secondary;
       background-clip: padding-box;
       border: 4px solid transparent;
       border-radius: 8px;
     }
     &::-webkit-scrollbar-track {
-      @apply bg-dark-secondary;
+      @apply bg-background-secondary;
     }
   }
 

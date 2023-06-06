@@ -39,7 +39,7 @@
 <div
   class="relative flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col overflow-hidden mt-5 gap-2"
 >
-  <div class="flex w-full flex-row font-medium gap-2 flex-0 items-center dark:bg-dark-secondary bg-light-secondary px-2 py-1 rounded-t-lg rounded-b-sm">
+  <div class="flex w-full flex-row font-medium gap-2 flex-0 items-center bg-background-secondary bg-background-secondary px-2 py-1 rounded-t-lg rounded-b-sm">
     <div class="bg-zinc-700 p-1 rounded-full">
       <MdiHash class="text-zinc-50" /> 
     </div>

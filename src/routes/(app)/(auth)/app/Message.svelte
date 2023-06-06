@@ -45,11 +45,7 @@
   const mid = message.id.replace(/^message:/, '')
   const me: UserData = $ME.data!.me
 
-  let hc: {
-    dataset: {
-      state: "open" | "closed"
-    }
-  } | undefined
+  let hc: any | undefined
 
   const ev = createEventDispatcher<{
     setreply: { message: typeof message }
@@ -62,7 +58,12 @@
     await DeleteMessage.mutate({
       mid: message.id
     })
-    hc?.dataset?.state && (hc.dataset.state = 'closed')
+    const hcard = hc ? hc as {
+      dataset: {
+        state: "closed" | "open"
+      }
+    } : undefined;
+    hcard?.dataset?.state && (hcard.dataset.state = 'closed')
   }
 </script>
 
@@ -76,7 +77,7 @@
       {/if}
       <div class="flex flex-row items-center gap-2 text-base">
         <span class="font-medium">{message.author.displayName}</span>
-        <span class="text-sm text-base1984-muted">
+        <span class="text-sm text-muted-foreground">
           {new Date(Date.parse(message.createdAt)).toLocaleString(undefined, {
             day: undefined,
             month: undefined,
@@ -103,7 +104,7 @@
     class="mr-2 w-max border-none p-0 outline-none"
     sideOffset={-10}
   >
-    <Toolbar color="none" embedded class="rounded-lg bg-gray-600">
+    <Toolbar color="none" embedded class="rounded-lg bg-secondary">
       <ToolbarButton on:click={reply}>
         <MdiReply />
       </ToolbarButton>
@@ -127,7 +128,7 @@
           <!-- i swear transitions -->
           <div transition:slide={{ axis: 'y', easing: quartInOut }}>
             <Sidebar>
-              <SidebarWrapper divClass="bg-gray-600 p-2">
+              <SidebarWrapper divClass="bg-secondary p-2">
                 <SidebarGroup>
                   <SidebarItem label="Reply" on:click={reply}>
                     <MdiReply slot="icon" />

@@ -36,39 +36,41 @@
   })
 </script>
 
-<Sidebar
-  asideClass="mt-5 mb-5 bg-light-secondary dark:bg-dark-secondary w-80 rounded-xl"
->
-  <SidebarWrapper
-    divClass="h-full flex flex-col dark:bg-dark-secondary bg-light-secondary p-2 rounded-xl"
+<div class="flex flex-col gap-1.5">
+  <Sidebar
+    asideClass="mt-5 bg-background-secondary bg-background-secondary w-80 rounded-t-xl h-full rounded-b-md"
   >
-    <!-- h -->
-    <SidebarGroup>
-      <SidebarItem label="Friends" href="/app/@me/friends">
-        <MdiFriends slot="icon" />
-      </SidebarItem>
-    </SidebarGroup>
-    <SidebarGroup>
-      {#await conversations_ then conversations}
-        {#each conversations as convo (unnull(convo.recipient.asUser).id)}
-          {@const recipient = unnull(convo.recipient.asUser)}
+    <SidebarWrapper
+      divClass="h-full flex flex-col bg-background-secondary bg-background-secondary p-2 rounded-t-xl rounded-b-md"
+    >
+      <!-- h -->
+      <SidebarGroup>
+        <SidebarItem label="Friends" href="/app/@me/friends">
+          <MdiFriends slot="icon" />
+        </SidebarItem>
+      </SidebarGroup>
+      <SidebarGroup class="overflow-y-auto">
+        {#await conversations_ then conversations}
+          {#each conversations as convo (unnull(convo.recipient.asUser).id)}
+            {@const recipient = unnull(convo.recipient.asUser)}
 
-          <SidebarItem
-            label={recipient.displayName}
-            href="/app/@me/{recipient.id}"
-          >
-            <Avatar
-              dot={{
-                placement: 'bottom-right',
-                color: statusColor(recipient.status),
-              }}
-              src={moss}
-              slot="icon"
-            />
-          </SidebarItem>
-        {/each}
-      {/await}
-    </SidebarGroup>
-    <MyselfView />
-  </SidebarWrapper>
-</Sidebar>
+            <SidebarItem
+              label={recipient.displayName}
+              href="/app/@me/{recipient.id}"
+            >
+              <Avatar
+                dot={{
+                  placement: 'bottom-right',
+                  color: statusColor(recipient.status),
+                }}
+                src={moss}
+                slot="icon"
+              />
+            </SidebarItem>
+          {/each}
+        {/await}
+      </SidebarGroup>
+    </SidebarWrapper>
+  </Sidebar>
+  <MyselfView />
+</div>

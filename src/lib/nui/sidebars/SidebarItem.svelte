@@ -1,19 +1,19 @@
 <script lang="ts">
   import { cn } from '$lib/typemagic'
-  import classNames from 'classnames';
 
   export let aClass: string =
-    'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700';
-  export let href: string = '';
-  export let label: string = '';
-  export let spanClass: string = 'ml-3';
+    'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+  export let href: string = ''
+  export let label: string = ''
+  export let spanClass: string = 'ml-3'
   export let activeClass: string =
-    'flex items-center p-2 text-base font-normal text-gray-900 bg-gray-200 dark:bg-gray-700 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700';
-  export let active: boolean = false;
+    'flex items-center p-2 text-base font-normal text-gray-900 bg-gray-200 dark:bg-gray-700 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+  export let active: boolean = false
 </script>
 
 <li>
-  <a
+  <svelte:element
+    this={href ? 'a' : 'button'}
     {...$$restProps}
     {href}
     on:blur
@@ -25,13 +25,14 @@
     on:mouseenter
     on:mouseleave
     on:mouseover
-    class={classNames(active ? cn(activeClass, aClass) : aClass, $$props.class)}>
+    class={cn(active ? cn(activeClass, aClass) : aClass, $$props.class)}
+  >
     <slot name="icon" />
-    <span class={spanClass}>{label}</span>
+    {#if label}<span class={spanClass}>{label}</span>{/if}
     {#if $$slots.subtext}
       <slot name="subtext" />
     {/if}
-  </a>
+  </svelte:element>
 </li>
 
 <!--

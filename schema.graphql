@@ -156,6 +156,7 @@ type MutationRoot {
   sendMessage(message: MessageInit!): Message!
   setAvatar(avatar: Upload!): User!
   setStatus(status: Status!): User!
+  setTheme(theme: Theme!): User!
 }
 
 """Information about pagination in a connection"""
@@ -237,6 +238,11 @@ interface TextableChannel {
   name: String!
 }
 
+enum Theme {
+  DARK
+  LIGHT
+}
+
 scalar Upload
 
 type User {
@@ -248,4 +254,5 @@ type User {
   tag: String!
   tagDiscriminator: [Int!]!
   tagName: String!
+  theme: Theme!
 }
