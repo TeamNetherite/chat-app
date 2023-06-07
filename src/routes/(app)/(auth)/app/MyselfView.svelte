@@ -21,12 +21,16 @@
   import MdiSettings from '~icons/mdi/settings'
   import { Skeleton } from '$lib/nui-next/skeleton'
   import { Popper, PopperAnchor, PopperContent } from '$lib/nui-next/popper'
+  import { isDrawer } from '$lib/state'
 
   const me_ = new MeStore()
   const setStatus = new SetStatusStore()
   let statusOpen = false
+
+  const drawer = isDrawer().autoDestroy()
 </script>
 
+{#if !$drawer}
 <div
   class="mb-5 rounded-b-lg rounded-t-md bg-background-secondary p-3"
 >
@@ -131,3 +135,4 @@
     </Popper>
   {/await}
 </div>
+{/if}

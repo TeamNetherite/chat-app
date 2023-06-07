@@ -49,6 +49,7 @@
     {messages}
     recipient={{ type: 'USER', id: recipient.id }}
     on:scrollup={(_) =>
-      $getConvo.pageInfo.hasPreviousPage ? getConvo.loadPreviousPage() : void 0}
+      $getConvo.pageInfo.hasPreviousPage ? getConvo.loadPreviousPage() : void 0
+    }
   />
 </div>

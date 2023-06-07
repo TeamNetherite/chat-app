@@ -37,6 +37,8 @@
   import { createEventDispatcher } from 'svelte'
   import Circle2 from 'svelte-loading-spinners/Circle2.svelte'
   import { DeleteMessageStore } from '$houdini'
+  import { isDrawer } from '$lib/state'
+  import Div from './div.svelte'
 
   export let message: MessageData | ChannelMessageData
   export let referenced: Omit<MessageData, 'recipient'> | undefined = undefined
@@ -65,9 +67,11 @@
     } : undefined;
     hcard?.dataset?.state && (hcard.dataset.state = 'closed')
   }
+
+  const drawer = isDrawer().autoDestroy()
 </script>
 
-<HoverCard openDelay={0} closeDelay={0}>
+<svelte:component this={$drawer ? Div : HoverCard} openDelay={0} closeDelay={0}>
   <HoverCardTrigger>
     <div class="flex flex-col" id="message-data-{mid}">
       {#if referenced}
@@ -146,4 +150,4 @@
       </Popper>
     </Toolbar>
   </HoverCardContent>
-</HoverCard>
+</svelte:component>

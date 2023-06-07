@@ -44,6 +44,7 @@
 
   function send() {
     ;(async () => {
+      if (messageContent.trim().length === 0) return
       const message = await sendMessage.mutate({
         init: {
           content: messageContent
@@ -112,7 +113,7 @@
   let prevScY = 0
 </script>
 
-<div class={cn('relative flex h-full flex-grow-0 flex-col', cls)}>
+<div class={cn('flex flex-grow-0 flex-col pb-10', cls)} style="max-height: max(40rem, 90dvh)">
     <div
       class="scrollerContent"
       bind:this={bonk}
@@ -130,7 +131,7 @@
         prevScY = node.scrollTop
       }}
     >
-      <ol class="scrollerInner">
+      <ol class="scrollerInner pb-10">
         {#if messages.length !== 0}
           <div use:stfd />
           {#each messagesGrouped as [day, messagess]}
@@ -187,26 +188,18 @@
 
 <style lang="scss">
   .date-breaker {
-    @apply mx-3 flex max-w-full justify-center border-[thin] border-t-accent text-sm font-semibold text-muted-foreground;
+    @apply mx-3 flex max-w-full justify-center border-t-accent text-sm font-semibold text-muted-foreground;
     height: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
     position: relative;
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 auto;
     flex: 0 0 auto;
     pointer-events: none;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
+    border-width: thin;
 
     .date-breaker-inner {
       @apply bg-gray-800 p-2 px-5;
@@ -220,21 +213,15 @@
   }
 
   .scrollerContent {
-    overflow-y: auto;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
+    position: relative;
+    overflow-y: scroll;
+    overflow-anchor: none;
     flex-direction: column;
-    -webkit-box-pack: end;
-    -ms-flex-pack: end;
     justify-content: flex-end;
-    -webkit-box-align: stretch;
-    -ms-flex-align: stretch;
-    align-items: stretch;
     min-height: 100%;
-    height: 100%;
+    height: inherit;
     scrollbar-width: auto;
-
+    scrollbar-color: theme('colors.stone.900');
     &::-webkit-scrollbar {
       @apply h-4 w-4;
     }
@@ -248,11 +235,8 @@
       @apply bg-background-secondary;
     }
   }
-
   .scrollerInner {
     min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+    height: inherit;
   }
 </style>

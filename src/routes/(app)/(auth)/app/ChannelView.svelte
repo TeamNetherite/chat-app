@@ -1,6 +1,7 @@
 <script lang="ts">
   import { GetChannelConvoStore, type Conversations$result, SentMessagesStore } from "$houdini"
   import type { ChannelMessageData } from "$lib/graphql"
+  import { isDrawer } from "$lib/state"
   import { type ArrayOf, uniqueBy } from "$lib/typemagic";
   import Messages from "./Messages.svelte";
   import MdiHash from '~icons/mdi/pound'
@@ -34,17 +35,19 @@
       }
     }
   }
+
+  const drawer = isDrawer().autoDestroy()
 </script>
 
 <div
-  class="relative flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col overflow-hidden mt-5 gap-2"
+  class="flex h-full max-h-screen min-h-0 w-full min-w-0 flex-col gap-2"
 >
-  <div class="flex w-full flex-row font-medium gap-2 flex-0 items-center bg-background-secondary bg-background-secondary px-2 py-1 rounded-t-lg rounded-b-sm">
+  <section class="flex w-full flex-row font-medium gap-2 flex-0 items-center bg-background-secondary px-2 py-1 rounded-t-lg rounded-b-sm mt-5">
     <div class="bg-zinc-700 p-1 rounded-full">
       <MdiHash class="text-zinc-50" /> 
     </div>
-    {channel.name}
-  </div>
+    {channel.name} {$drawer}
+  </section>
 
   <Messages
     {messages}
