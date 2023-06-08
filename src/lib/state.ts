@@ -13,7 +13,7 @@ export const query = {
     dark: "(prefers-color-scheme: dark)",
     light: "(prefers-color-scheme: light)",
   },
-  drawer: "(480px <= width <= 1200px) and (orientation: portrait)",
+  drawer: "(orientation: portrait)",
 };
 
 export type QueryMatch = {
