@@ -1,11 +1,14 @@
 <script lang="ts">
-  import type { HTMLAttributes } from "svelte/elements"
-  import type { BruhProps } from "."
-  import { cn } from "$lib/typemagic"
+  import type { HTMLAttributes } from 'svelte/elements'
+  import { bruh, type BruhProps } from '.'
 
-  interface $$Props extends BruhProps, HTMLAttributes<HTMLAnchorElement> {}
+  export let href: string | undefined = undefined
+
+  interface $$Props extends HTMLAttributes<HTMLAnchorElement>, BruhProps {
+    href?: string
+  }
 </script>
 
-<a class={cn(
-
-)} {...$$restProps}></a>
+<a {href} {...$$restProps} class={bruh($$props, $$restProps)}>
+  <slot />
+</a>

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import ChannelView from "../../ChannelView.svelte"
-  import type { PageData } from "./$types"
+  import ChannelView from '../../ChannelView.svelte'
+  import type { PageData } from './$types'
   import { unnull } from '$lib/typemagic'
 
   export let data: PageData
@@ -13,5 +13,11 @@
 </script>
 
 {#if $GetChannels.data?.byId.guild}
-  <ChannelView channel={unnull($GetChannels.data.byId.guild.channels.find(val => val.identifier === channel))}></ChannelView>
+  <ChannelView
+    channel={unnull(
+      $GetChannels.data.byId.guild.channels.find(
+        (val) => val.identifier === channel
+      )
+    )}
+  />
 {/if}

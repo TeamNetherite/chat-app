@@ -1,19 +1,19 @@
 <script>
-  import { Container, Each } from "$lib/nui-next/container"
+  import { Each } from "$lib/nui-next/container"
 
   import { tabs } from './things'
 </script>
-<Container flex column divide-y divide-secondary gap-md>
+<div>
   <Each list={tabs} let:item let:index>
-    <Container id='settings-group-{index}' flex column ol>
+    <ol id='settings-group-{index}'>
       {#each Object.entries(item) as [href, [ic, name]] (href)}
-        <Container li flex gap-lg class='pt-4'>
-          <Container flex a href='/app/settings/{href}'>
+        <li>
+          <a href='/app/settings/{href}'>
             <svelte:component this={ic} />
             {name}
-          </Container>
-        </Container>
+          </a>
+        </li>
       {/each}
-    </Container>
+    </ol>
   </Each>
-</Container>
+</div>

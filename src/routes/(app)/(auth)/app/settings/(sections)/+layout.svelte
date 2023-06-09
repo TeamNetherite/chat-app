@@ -6,6 +6,7 @@
   import MdiArrowLeft from '~icons/mdi/arrow-left'
   import { goto } from '$app/navigation'
   import { isDrawer } from '$lib/state'
+  import { tabs } from '../things'
 
   const tabHrefs: (keyof ArrayOf<typeof tabs>)[] = cast(
     tabs.flatMap(Object.keys)
@@ -29,7 +30,7 @@
 />
 
 <div class="flex h-full flex-row gap-8">
-  {#if $drawer}
+  {#if !$drawer}
     <Sidebar asideClass="[min-width:16rem] w-max max-w-full ml-16 mt-8 h-full">
       <SidebarWrapper
         divClass="[min-width:16rem] w-max max-w-full flex flex-col h-full"
@@ -57,24 +58,25 @@
     </Sidebar>
   {/if}
 
-  <div class="flex flex-col h-full w-full">
+  <div class="flex h-full w-full flex-col">
     {#if $drawer}
-      <section class='flex flex-row gap-2'>
-        <a href='/app/settings'><MdiArrowLeft /></a>
-        {toTitleCase($page.url.pathname.split('/').at(-1))}</section>
+      <section class="flex flex-row gap-2">
+        <a href="/app/settings"><MdiArrowLeft /></a>
+        {toTitleCase($page.url.pathname.split('/').at(-1) ?? '')}
+      </section>
     {/if}
     <div class="my-8 h-full w-full">
       <slot />
     </div>
   </div>
 
-    <button
-      class="ml-auto mr-10 mt-8 flex flex-col items-center gap-2 self-start"
-      on:click={() => escape()}
-    >
-      <MdiClose
-        class="h-8 w-8 rounded-full bg-secondary p-2 outline outline-background-secondary"
-      />
-      ESC
-    </button>
+  <button
+    class="ml-auto mr-10 mt-8 flex flex-col items-center gap-2 self-start"
+    on:click={() => escape()}
+  >
+    <MdiClose
+      class="h-8 w-8 rounded-full bg-secondary p-2 outline outline-background-secondary"
+    />
+    ESC
+  </button>
 </div>

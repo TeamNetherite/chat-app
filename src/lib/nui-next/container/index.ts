@@ -1,7 +1,13 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import Each from "./Each.svelte";
 
-export { Each };
+import ABruh from './ABruh.svelte'
+import DivBruh from './DivBruh.svelte'
+import LiBruh from './LiBruh.svelte'
+import ListBruh from './ListBruh.svelte'
+import { cn } from "$lib/typemagic";
+
+export { ABruh, DivBruh, LiBruh, ListBruh, Each };
 
 export const bruhVariants = cva("", {
   variants: {
@@ -34,6 +40,7 @@ export const bruhVariants = cva("", {
       accent: "divide-accent",
       secondary: "divide-secondary",
       bgSecondary: "divide-background-secondary",
+      border: 'divide-border'
     },
     alignItems: {
       center: "items-center",
@@ -45,6 +52,8 @@ export const bruhVariants = cva("", {
     display: "flex",
     direction: "row",
     gap: "none",
+    divideDirection: "none",
+    divideColor: "border",
     alignItems: "start",
   },
 });
@@ -89,7 +98,8 @@ export interface BruhProps {
   "items-end"?: true;
 }
 
-export function bruh(props: BruhProps): string {
+export function bruh(props: BruhProps & { class?: string }, restProps: Partial<BruhProps> & { class?: string } | undefined = undefined): string {
+  props = { ...props, ...restProps };
   const display = props.display ?? (
     props.flex ? "flex" : props.block ? "block" : undefined
   );
@@ -109,10 +119,22 @@ export function bruh(props: BruhProps): string {
       ? "xxl"
       : undefined
   );
+  const divideDirection = props.divide ?? (
+    props["divide-x"] ? "x" : props["divide-y"] ? "y" : undefined
+  )
+  const divideColor = props["divide-color"] ?? (
+    props["divide-accent"] ? "accent" : props["divide-secondary"] ? "secondary" : props["divide-bg-secondary"] ? "bgSecondary" : undefined
+  )
+  const alignItems = props["align-items"] ?? (
+    props["items-center"] ? "center" : props["items-start"] ? "start" : props["items-end"] ? "end" : undefined
+  )
 
-  return bruhVariants({
+  return cn(bruhVariants({
     display,
     direction,
-    gap
-  });
+    gap,
+    divideDirection,
+    divideColor,
+    alignItems
+  }), props['class'], restProps?.['class']);
 }
