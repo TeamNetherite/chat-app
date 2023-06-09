@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount, setContext } from 'svelte'
+  import { onMount } from 'svelte'
   import '../App.scss'
   import { Theme } from '$houdini'
   import { theme as themeStore } from './(app)/(auth)/app/settings/(sections)/appearance/+page.svelte'
