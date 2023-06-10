@@ -29,7 +29,7 @@
   on:keyup={(e) => (e.key === 'Escape' || e.keyCode === 27) && escape()}
 />
 
-<div class="flex h-full flex-row gap-8">
+<div class="flex h-full w-full flex-row gap-8">
   {#if !$drawer}
     <Sidebar asideClass="[min-width:16rem] w-max max-w-full ml-16 mt-8 h-full">
       <SidebarWrapper
@@ -39,9 +39,7 @@
           <SidebarGroup
             ulClass={cn('space-y-2', '/' in tab && 'mt-auto mb-16')}
           >
-            {#each Object.entries(tab) as [href, data]}
-              {@const [icon, label] = data}
-              {@const onclick = data[2] ? data[2] : () => {}}
+            {#each Object.entries(tab) as [href, [icon, label]]}
               <SidebarItem
                 href={href === '/' ? href : `/app/settings/${href}`}
                 {label}

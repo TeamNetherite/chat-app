@@ -1,6 +1,6 @@
 <script lang="ts">
   import { setContext } from 'svelte';
-  import classNames from 'classnames';
+  import { cn } from '$lib/typemagic'
 
   export let position: 'static' | 'fixed' | 'absolute' | 'relative' | 'sticky' = 'fixed';
   export let navType:
@@ -45,8 +45,8 @@
     custom: innerCustom
   };
 
-  $: outerClass = classNames(position, outerDefault, outerDivClasses[navType], $$props.outerDiv);
-  $: innerClass = classNames(innerDefault, innerDivClasses[navType], $$props.innerDiv);
+  $: outerClass = cn(position, outerDefault, outerDivClasses[navType], $$props.outerDiv);
+  $: innerClass = cn(innerDefault, innerDivClasses[navType], $$props.innerDiv);
 </script>
 
 <div {...$$restProps} class={outerClass}>

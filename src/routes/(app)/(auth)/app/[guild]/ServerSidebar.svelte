@@ -16,10 +16,13 @@
   import { page } from '$app/stores'
   import type { GetChannelsStore } from '$houdini'
   import MyselfView from '../MyselfView.svelte'
+  import { getContext } from 'svelte'
 
   export let serverId: string
 
   export let GetChannels: GetChannelsStore
+
+  const drawerClose = getContext<() => void>('drawerClose')
 </script>
 
 <div class="flex flex-col gap-1">
@@ -35,6 +38,7 @@
           href="/app/{serverId}"
           active={$page.url.pathname === `/app/${serverId}`}
           class="rounded-xl"
+          on:click={drawerClose}
         >
           <MdiHome slot="icon" />
         </SidebarItem>
@@ -73,6 +77,7 @@
                 idx + 1 === channels.length ? 'rounded-b-xl' : 'rounded-b-md',
                 idx === 0 ? 'rounded-t-xl' : 'rounded-t-md'
               )}
+              on:click={drawerClose}
             >
               <MdiHash slot="icon" />
             </SidebarItem>

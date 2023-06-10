@@ -9,7 +9,4 @@ export const tabs = [
   {
     appearance: [MdiPalette, "Appearance"],
   } as const,
-  {
-    "/": [MdiLogout, "Logout", () => {}],
-  } as const,
 ];

@@ -11,6 +11,7 @@
   import { Avatar } from '$lib/nui'
   import moss from '$lib/../../assets/moss.png'
   import yay from '$lib/yayql'
+  import { getContext } from 'svelte'
 
   const conversations_ = yay(new ConversationsStore()).then(async (val) => {
     const cvs = val.conversations!
@@ -34,6 +35,8 @@
     cvs.sort((a, b) => ms[b.recipient.asUser!.id] - ms[a.recipient.asUser!.id])
     return cvs
   })
+
+  const drawerClose = getContext<() => void>('drawerClose')
 </script>
 
 <div class="flex flex-col gap-1.5">
@@ -57,6 +60,7 @@
             <SidebarItem
               label={recipient.displayName}
               href="/app/@me/{recipient.id}"
+              on:click={() => drawerClose()}
             >
               <Avatar
                 dot={{

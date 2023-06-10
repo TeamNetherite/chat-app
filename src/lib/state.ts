@@ -27,13 +27,15 @@ export type QueryMatch = {
         : never));
 };
 
-export function isDrawer(): Readable<boolean> & {
+export function isDrawer(noDestroy: boolean = false): Readable<boolean> & {
   autoDestroy: () => Readable<boolean>;
 } {
+  const drawer = createMediaStore(query.drawer)
+  if (!noDestroy) onDestroy(() => drawer.destroy());
+
   return {
-    ...cast(createMediaStore(query.drawer)),
+    ...cast(drawer),
     autoDestroy(this: Readable<boolean> & { destroy: () => void }) {
-      onDestroy(this.destroy);
       return this;
     },
   };

@@ -55,3 +55,10 @@ export async function refresh(
 }
 
 export const currentTokens = writable<Tokens>(undefined);
+
+export async function logout() {
+  currentTokens.set(undefined as unknown as Tokens)
+  
+  localStorage.removeItem("netheritechataccesstoken");
+  localStorage.removeItem("netheritechatrefreshtoken");
+}
