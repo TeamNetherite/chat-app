@@ -1,7 +1,0 @@
-package chat.netherite.netherite_chat_app
-
-import app.tauri.plugin.PluginManager
-
-class MainActivity : TauriActivity() {
-  var pluginManager: PluginManager = PluginManager(this)
-}
